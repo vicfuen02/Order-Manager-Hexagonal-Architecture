@@ -9,11 +9,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-@Component
-public abstract class OrderMapper {
+public abstract class OrderRestControllerMapper {
 
-    public abstract OrderBDTO createOrderReqDTOToOrderBDTO(CreateOrderReqDTO order);
+    public abstract OrderBDTO toBTO(CreateOrderReqDTO order);
 
-    public abstract List<OrderResDTO> orderBDTOListToOrderResDTO(List<OrderBDTO> order);
+    public abstract List<OrderResDTO> orderListToResDTO(List<OrderBDTO> order);
 
 }

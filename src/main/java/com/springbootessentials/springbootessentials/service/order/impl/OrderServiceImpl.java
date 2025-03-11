@@ -12,11 +12,15 @@ public class OrderServiceImpl implements OrderService {
 
 
     public Long createOrder(OrderBDTO order) {
-        return null;
+        return 1000L;
     }
 
     public List<OrderBDTO> getOrders() {
-        return new ArrayList<>();
+        List<OrderBDTO> orders = new ArrayList<>();
+        OrderBDTO order = new OrderBDTO();
+        order.setId(1000L);
+        orders.add(order);
+        return orders;
     }
 
 

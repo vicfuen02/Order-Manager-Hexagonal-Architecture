@@ -2,7 +2,7 @@ package com.springbootessentials.springbootessentials.controller.order.impl;
 
 import com.springbootessentials.springbootessentials.controller.order.dto.CreateOrderReqDTO;
 import com.springbootessentials.springbootessentials.controller.order.dto.OrderResDTO;
-import com.springbootessentials.springbootessentials.controller.order.mapper.OrderMapper;
+import com.springbootessentials.springbootessentials.controller.order.mapper.OrderRestControllerMapper;
 import com.springbootessentials.springbootessentials.service.order.OrderService;
 import com.springbootessentials.springbootessentials.service.order.dto.OrderBDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,25 +17,28 @@ import java.util.List;
 @RestController
 public class OrderRestController {
 
-    @Autowired
+
     private OrderService orderService;
+    private OrderRestControllerMapper orderRestControllerMapper;
 
     @Autowired
-    private OrderMapper orderMapper;
-
+    public OrderRestController(OrderService orderService, OrderRestControllerMapper orderRestControllerMapper) {
+        this.orderService = orderService;
+        this.orderRestControllerMapper = orderRestControllerMapper;
+    }
 
     @GetMapping
     public List<OrderResDTO> getOrders() {
 
         List<OrderBDTO> orderList = this.orderService.getOrders();
-        return this.orderMapper.orderBDTOListToOrderResDTO(orderList);
+        return this.orderRestControllerMapper.orderListToResDTO(orderList);
     }
 
 
     @PostMapping
     public Long createOrder(CreateOrderReqDTO order) {
 
-        OrderBDTO orderBDTO = this.orderMapper.createOrderReqDTOToOrderBDTO(order);
+        OrderBDTO orderBDTO = this.orderRestControllerMapper.toBTO(order);
         return this.orderService.createOrder(orderBDTO);
     }
 
