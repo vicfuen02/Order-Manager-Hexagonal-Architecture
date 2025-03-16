@@ -6,16 +6,13 @@ import com.springbootessentials.springbootessentials.controller.order.mapper.Ord
 import com.springbootessentials.springbootessentials.service.order.OrderService;
 import com.springbootessentials.springbootessentials.service.order.dto.OrderBDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequestMapping("/order")
 @RestController
-public class OrderRestController {
+public class OrderRestController extends OrderExceptionHandler {
 
 
     private OrderService orderService;
@@ -36,10 +33,17 @@ public class OrderRestController {
 
 
     @PostMapping
-    public Long createOrder(CreateOrderReqDTO order) {
+    public Long createOrder(@RequestBody CreateOrderReqDTO order) {
 
         OrderBDTO orderBDTO = this.orderRestControllerMapper.toBTO(order);
         return this.orderService.createOrder(orderBDTO);
+    }
+
+    @GetMapping("/{id}")
+    public OrderResDTO getOrderById(@PathVariable Long id) {
+
+        OrderBDTO orderByIdResult = this.orderService.getOrderById(id);
+        return this.orderRestControllerMapper.toResDTO(orderByIdResult);
     }
 
 }
