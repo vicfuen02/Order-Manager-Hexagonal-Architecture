@@ -14,5 +14,6 @@ public abstract class OrderRestControllerMapper {
     public abstract OrderBDTO toBTO(CreateOrderReqDTO order);
 
     public abstract List<OrderResDTO> orderListToResDTO(List<OrderBDTO> order);
+    public abstract OrderResDTO toResDTO(OrderBDTO order);
 
 }
