@@ -6,6 +6,8 @@ import com.springbootessentials.springbootessentials.controller.order.mapper.Ord
 import com.springbootessentials.springbootessentials.service.order.OrderService;
 import com.springbootessentials.springbootessentials.service.order.dto.OrderBDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class OrderRestController extends OrderExceptionHandler {
         this.orderRestControllerMapper = orderRestControllerMapper;
     }
 
+    @Cacheable(value="/order")
     @GetMapping
     public List<OrderResDTO> getOrders() {
 
@@ -32,6 +35,7 @@ public class OrderRestController extends OrderExceptionHandler {
     }
 
 
+    @CacheEvict(value={"/order"}, allEntries = true)
     @PostMapping
     public Long createOrder(@RequestBody CreateOrderReqDTO order) {
 
@@ -39,6 +43,7 @@ public class OrderRestController extends OrderExceptionHandler {
         return this.orderService.createOrder(orderBDTO);
     }
 
+    @Cacheable(value="/order/{id}")
     @GetMapping("/{id}")
     public OrderResDTO getOrderById(@PathVariable Long id) {
 
