@@ -2,6 +2,7 @@ package com.springbootessentials.springbootessentials.controller.order.impl;
 
 import com.springbootessentials.springbootessentials.controller.order.dto.CreateOrderReqDTO;
 import com.springbootessentials.springbootessentials.controller.order.dto.OrderResDTO;
+import com.springbootessentials.springbootessentials.controller.order.dto.UpdateOrderReqDTO;
 import com.springbootessentials.springbootessentials.controller.order.mapper.OrderRestControllerMapper;
 import com.springbootessentials.springbootessentials.service.order.OrderService;
 import com.springbootessentials.springbootessentials.service.order.dto.OrderBDTO;
@@ -26,7 +27,8 @@ public class OrderRestController extends OrderExceptionHandler {
         this.orderRestControllerMapper = orderRestControllerMapper;
     }
 
-    @Cacheable(value="/order")
+
+    @Cacheable(value={"/order"}, key="#root.target.getCacheKey(#root.target.class.name, #root.method.name, #root.args)")
     @GetMapping
     public List<OrderResDTO> getOrders() {
 
@@ -34,8 +36,7 @@ public class OrderRestController extends OrderExceptionHandler {
         return this.orderRestControllerMapper.orderListToResDTO(orderList);
     }
 
-
-    @CacheEvict(value={"/order"}, allEntries = true)
+    @CacheEvict(value={"/order"}, allEntries=true)
     @PostMapping
     public Long createOrder(@RequestBody CreateOrderReqDTO order) {
 
@@ -43,12 +44,21 @@ public class OrderRestController extends OrderExceptionHandler {
         return this.orderService.createOrder(orderBDTO);
     }
 
-    @Cacheable(value="/order/{id}")
+    @Cacheable(value={"/order/{id}"}, key="#root.target.getCacheKey(#root.target.class.name, #root.method.name, #root.args)")
     @GetMapping("/{id}")
     public OrderResDTO getOrderById(@PathVariable Long id) {
 
         OrderBDTO orderByIdResult = this.orderService.getOrderById(id);
         return this.orderRestControllerMapper.toResDTO(orderByIdResult);
+    }
+
+    @CacheEvict(value={"/order/{id}", "/order"}, allEntries = true)
+    @PutMapping("/{id}")
+    public Long updateOrder(@PathVariable Long id, @RequestBody UpdateOrderReqDTO order) {
+
+        order.setId(id);
+        OrderBDTO orderBDTO = this.orderRestControllerMapper.toBTO(order);
+        return this.orderService.updateOrder(orderBDTO);
     }
 
 }

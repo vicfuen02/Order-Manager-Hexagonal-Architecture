@@ -1,6 +1,5 @@
 package com.springbootessentials.springbootessentials.controller.order.impl;
 
-import com.springbootessentials.springbootessentials.common.exception.SPEssentialsException;
 import com.springbootessentials.springbootessentials.controller.common.BaseExceptionHandler;
 import com.springbootessentials.springbootessentials.controller.common.ControllerErrorResponseDTO;
 import com.springbootessentials.springbootessentials.service.order.exceptions.InvalidOrderIdSPEssentialsException;
