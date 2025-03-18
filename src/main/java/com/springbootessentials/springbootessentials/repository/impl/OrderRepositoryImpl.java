@@ -37,4 +37,16 @@ public class OrderRepositoryImpl implements OrderRepository {
                 .filter(orderEntity -> orderEntity.getId().equals(id))
                 .findFirst();
     }
+    @Override
+    public Long updateOrder(OrderEntity order) {
+
+        OrderEntity orderResult = SpringbootessentialsApplication.getOrders()
+                .stream()
+                .filter(or -> or.getId().equals(order.getId()))
+                .findFirst().orElse(new OrderEntity());
+
+        orderResult.setItemName(order.getItemName());
+
+        return order.getId();
+    }
 }

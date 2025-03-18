@@ -50,6 +50,11 @@ public class OrderServiceImpl implements OrderService {
         return this.orderServiceMapper.toBDTO(orderEntity);
     }
 
+    public Long updateOrder(OrderBDTO order) {
+        OrderEntity orderEntity = this.orderServiceMapper.toEntity(order);
+        return this.orderRepository.updateOrder(orderEntity);
+    }
+
 
 
 
