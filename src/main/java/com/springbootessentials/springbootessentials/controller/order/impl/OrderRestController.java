@@ -28,7 +28,7 @@ public class OrderRestController extends OrderExceptionHandler {
     }
 
 
-    @Cacheable(value={"/order"}, key="#root.target.getCacheKey(#root.target.class.name, #root.method.name, #root.args)")
+    @Cacheable(value={"/order"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", key="#root.target.getCacheKey(#root.caches, #root.target.class.name, #root.method.name, #root.args)")
     @GetMapping
     public List<OrderResDTO> getOrders() {
 
@@ -36,7 +36,7 @@ public class OrderRestController extends OrderExceptionHandler {
         return this.orderRestControllerMapper.orderListToResDTO(orderList);
     }
 
-    @CacheEvict(value={"/order"}, allEntries=true)
+    @CacheEvict(value={"/order/create"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", allEntries=true)
     @PostMapping
     public Long createOrder(@RequestBody CreateOrderReqDTO order) {
 
@@ -44,7 +44,7 @@ public class OrderRestController extends OrderExceptionHandler {
         return this.orderService.createOrder(orderBDTO);
     }
 
-    @Cacheable(value={"/order/{id}"}, key="#root.target.getCacheKey(#root.target.class.name, #root.method.name, #root.args)")
+    @Cacheable(value={"/order/{id}"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", key="#root.target.getCacheKey(#root.caches, #root.target.class.name, #root.method.name, #root.args)")
     @GetMapping("/{id}")
     public OrderResDTO getOrderById(@PathVariable Long id) {
 
@@ -52,7 +52,8 @@ public class OrderRestController extends OrderExceptionHandler {
         return this.orderRestControllerMapper.toResDTO(orderByIdResult);
     }
 
-    @CacheEvict(value={"/order/{id}", "/order"}, allEntries = true)
+    @CacheEvict(value={"/order/{id}/update"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", allEntries = true)
+//    @CacheEvict(value={"/order/{id}", "/order"}, allEntries = true)
     @PutMapping("/{id}")
     public Long updateOrder(@PathVariable Long id, @RequestBody UpdateOrderReqDTO order) {
 

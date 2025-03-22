@@ -3,8 +3,10 @@ package com.springbootessentials.springbootessentials;
 import com.springbootessentials.springbootessentials.repository.dto.OrderEntity;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootApplication
@@ -13,8 +15,13 @@ public class SpringbootessentialsApplication {
 	private static List<OrderEntity> orderEntities = new ArrayList<>();
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringbootessentialsApplication.class, args);
+		ConfigurableApplicationContext appCtx = SpringApplication.run(SpringbootessentialsApplication.class, args);
+		printAppBeans(appCtx);
 		orderEntities = initOrders();
+	}
+
+	private static void printAppBeans(ConfigurableApplicationContext appCtx) {
+		Arrays.stream(appCtx.getBeanDefinitionNames()).forEach(System.out::println);
 	}
 
 
