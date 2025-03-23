@@ -16,7 +16,7 @@ public class SpringbootessentialsApplication {
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext appCtx = SpringApplication.run(SpringbootessentialsApplication.class, args);
-		printAppBeans(appCtx);
+//		printAppBeans(appCtx);
 		orderEntities = initOrders();
 	}
 

@@ -2,6 +2,7 @@ package com.springbootessentials.springbootessentials.controller.common;
 
 import org.springframework.http.HttpStatus;
 
+
 public class ControllerErrorResponseDTO {
 
 
