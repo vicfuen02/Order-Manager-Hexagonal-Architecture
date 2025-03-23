@@ -1,6 +1,7 @@
 package com.springbootessentials.springbootessentials.repository.impl;
 
 import com.springbootessentials.springbootessentials.SpringbootessentialsApplication;
+import com.springbootessentials.springbootessentials.common.annotations.LoggableSPE;
 import com.springbootessentials.springbootessentials.repository.OrderRepository;
 import com.springbootessentials.springbootessentials.repository.dto.OrderEntity;
 import org.springframework.stereotype.Repository;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@LoggableSPE
 public class OrderRepositoryImpl implements OrderRepository {
 
 

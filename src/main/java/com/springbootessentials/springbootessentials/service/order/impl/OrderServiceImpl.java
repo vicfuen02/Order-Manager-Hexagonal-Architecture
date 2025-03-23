@@ -1,6 +1,6 @@
 package com.springbootessentials.springbootessentials.service.order.impl;
 
-import com.springbootessentials.springbootessentials.common.exception.SPEssentialsException;
+import com.springbootessentials.springbootessentials.common.annotations.LoggableSPE;
 import com.springbootessentials.springbootessentials.common.exception.SPEssentialsExceptionFactory;
 import com.springbootessentials.springbootessentials.repository.OrderRepository;
 import com.springbootessentials.springbootessentials.repository.dto.OrderEntity;
@@ -10,13 +10,12 @@ import com.springbootessentials.springbootessentials.service.order.exceptions.In
 import com.springbootessentials.springbootessentials.service.order.exceptions.OrderExceptionsEnum;
 import com.springbootessentials.springbootessentials.service.order.mapper.OrderServiceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@LoggableSPE
 public class OrderServiceImpl implements OrderService {
 
 

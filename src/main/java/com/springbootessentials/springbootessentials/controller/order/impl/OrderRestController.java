@@ -1,11 +1,14 @@
 package com.springbootessentials.springbootessentials.controller.order.impl;
 
+import com.springbootessentials.springbootessentials.common.annotations.LoggableSPE;
 import com.springbootessentials.springbootessentials.controller.order.dto.CreateOrderReqDTO;
 import com.springbootessentials.springbootessentials.controller.order.dto.OrderResDTO;
 import com.springbootessentials.springbootessentials.controller.order.dto.UpdateOrderReqDTO;
 import com.springbootessentials.springbootessentials.controller.order.mapper.OrderRestControllerMapper;
 import com.springbootessentials.springbootessentials.service.order.OrderService;
 import com.springbootessentials.springbootessentials.service.order.dto.OrderBDTO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -15,8 +18,10 @@ import java.util.List;
 
 @RequestMapping("/order")
 @RestController
+@LoggableSPE
 public class OrderRestController extends OrderExceptionHandler {
 
+    private final Logger log = LogManager.getLogger(OrderRestController.class);
 
     private OrderService orderService;
     private OrderRestControllerMapper orderRestControllerMapper;

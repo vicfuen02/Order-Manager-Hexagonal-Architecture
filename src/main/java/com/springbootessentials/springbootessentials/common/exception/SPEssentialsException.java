@@ -15,6 +15,10 @@ public class SPEssentialsException extends RuntimeException {
         this.httpStatus = httpStatus;
     }
 
+    public SPEssentialsException(Throwable cause) {
+        super(cause);
+        this.message = cause.getMessage();
+    }
 
     public String getCode() {
         return code;
