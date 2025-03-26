@@ -30,4 +30,14 @@ public class CacheServiceImpl implements CacheService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Boolean clearAll() {
+
+        this.cacheManager.getCacheNames()
+                .stream()
+                .map(cacheManager::getCache)
+                .forEach(Cache::clear);
+        return true;
+    }
+
 }

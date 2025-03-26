@@ -1,6 +1,8 @@
-package com.springbootessentials.springbootessentials.controller.common;
+package com.springbootessentials.springbootessentials.controller.common.exceptionHanlder;
 
 import com.springbootessentials.springbootessentials.common.exception.SPEssentialsException;
+import com.springbootessentials.springbootessentials.controller.common.BaseRestController;
+import com.springbootessentials.springbootessentials.controller.common.dto.ControllerErrorResDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -16,10 +18,10 @@ public class BaseExceptionHandler extends BaseRestController {
     private final Logger log = LogManager.getLogger(BaseExceptionHandler.class);
 
     @ExceptionHandler({SPEssentialsException.class})
-    public ResponseEntity<ControllerErrorResponseDTO> handleException(SPEssentialsException ex) {
+    public ResponseEntity<ControllerErrorResDTO> handleException(SPEssentialsException ex) {
 
         log.error(ex);
-        ControllerErrorResponseDTO errorResponse = new ControllerErrorResponseDTO.Builder()
+        ControllerErrorResDTO errorResponse = new ControllerErrorResDTO.Builder()
                 .setMsg(ex.getMessage())
                 .setHttpStatus(ex.getHttpStatus())
                 .build();
@@ -28,10 +30,10 @@ public class BaseExceptionHandler extends BaseRestController {
 
 
     @ExceptionHandler({RuntimeException.class})
-    public ResponseEntity<ControllerErrorResponseDTO> handleException(RuntimeException ex) {
+    public ResponseEntity<ControllerErrorResDTO> handleException(RuntimeException ex) {
 
         log.error(ex);
-        ControllerErrorResponseDTO errorResponse = new ControllerErrorResponseDTO.Builder()
+        ControllerErrorResDTO errorResponse = new ControllerErrorResDTO.Builder()
                 .setMsg(ex.getMessage())
                 .setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
                 .build();

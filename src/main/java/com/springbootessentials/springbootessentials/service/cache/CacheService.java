@@ -8,4 +8,6 @@ public interface CacheService {
 
     List<Cache> getAllCaches();
 
+    Boolean clearAll();
+
 }

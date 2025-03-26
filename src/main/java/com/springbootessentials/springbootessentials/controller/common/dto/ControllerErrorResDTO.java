@@ -1,16 +1,16 @@
-package com.springbootessentials.springbootessentials.controller.common;
+package com.springbootessentials.springbootessentials.controller.common.dto;
 
 import org.springframework.http.HttpStatus;
 
 
-public class ControllerErrorResponseDTO {
+public class ControllerErrorResDTO {
 
 
     private String message;
     private HttpStatus httpStatus;
 
 
-    private ControllerErrorResponseDTO(Builder errorResponse) {
+    private ControllerErrorResDTO(Builder errorResponse) {
         this.message = errorResponse.getMsg();
         this.httpStatus = errorResponse.getHttpStatus();
 
@@ -32,8 +32,8 @@ public class ControllerErrorResponseDTO {
         private HttpStatus httpStatus;
 
 
-        public ControllerErrorResponseDTO build() {
-            return new ControllerErrorResponseDTO(this);
+        public ControllerErrorResDTO build() {
+            return new ControllerErrorResDTO(this);
         }
 
 

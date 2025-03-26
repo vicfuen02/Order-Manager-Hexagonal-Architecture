@@ -1,12 +1,11 @@
 package com.springbootessentials.springbootessentials.controller.order.impl;
 
-import com.springbootessentials.springbootessentials.common.annotations.LoggableSPE;
-import com.springbootessentials.springbootessentials.controller.order.dto.CreateOrderReqDTO;
-import com.springbootessentials.springbootessentials.controller.order.dto.OrderResDTO;
-import com.springbootessentials.springbootessentials.controller.order.dto.UpdateOrderReqDTO;
+import com.springbootessentials.springbootessentials.common.annotations.LogExecutionSPE;
+import com.springbootessentials.springbootessentials.controller.order.dto.*;
 import com.springbootessentials.springbootessentials.controller.order.mapper.OrderRestControllerMapper;
 import com.springbootessentials.springbootessentials.service.order.OrderService;
 import com.springbootessentials.springbootessentials.service.order.dto.OrderBDTO;
+import com.springbootessentials.springbootessentials.service.order.dto.SendOrderBDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +17,10 @@ import java.util.List;
 
 @RequestMapping("/order")
 @RestController
-@LoggableSPE
+@LogExecutionSPE
 public class OrderRestController extends OrderExceptionHandler {
 
-    private final Logger log = LogManager.getLogger(OrderRestController.class);
+    private static final Logger log = LogManager.getLogger(OrderRestController.class);
 
     private OrderService orderService;
     private OrderRestControllerMapper orderRestControllerMapper;
@@ -65,6 +64,17 @@ public class OrderRestController extends OrderExceptionHandler {
         order.setId(id);
         OrderBDTO orderBDTO = this.orderRestControllerMapper.toBTO(order);
         return this.orderService.updateOrder(orderBDTO);
+    }
+
+
+    @CacheEvict(value={"/order/sendOrder/{id}"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)")
+    @PostMapping("/sendOrder/{id}")
+    public OrderResDTO sendOrder(@PathVariable Long id, @RequestBody SendOrderReqDTO sendOrder) {
+
+        sendOrder.setOrderId(id);
+        SendOrderBDTO orderBDTO = this.orderRestControllerMapper.toBTO(sendOrder);
+        OrderBDTO res = this.orderService.sendOrder(orderBDTO);
+        return this.orderRestControllerMapper.toResDTO(res);
     }
 
 }

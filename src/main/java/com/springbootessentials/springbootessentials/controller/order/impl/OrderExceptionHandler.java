@@ -1,7 +1,7 @@
 package com.springbootessentials.springbootessentials.controller.order.impl;
 
-import com.springbootessentials.springbootessentials.controller.common.BaseExceptionHandler;
-import com.springbootessentials.springbootessentials.controller.common.ControllerErrorResponseDTO;
+import com.springbootessentials.springbootessentials.controller.common.exceptionHanlder.BaseExceptionHandler;
+import com.springbootessentials.springbootessentials.controller.common.dto.ControllerErrorResDTO;
 import com.springbootessentials.springbootessentials.service.order.exceptions.InvalidOrderIdSPEssentialsException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,13 +17,13 @@ public class OrderExceptionHandler extends BaseExceptionHandler {
 
 
     @ExceptionHandler({InvalidOrderIdSPEssentialsException.class})
-    public ResponseEntity<ControllerErrorResponseDTO> handleException(InvalidOrderIdSPEssentialsException ex) {
+    public ResponseEntity<ControllerErrorResDTO> handleException(InvalidOrderIdSPEssentialsException ex) {
 
         log.error(ex);
         String msg  = new StringBuilder("My special treatement to invalid order id. ")
                 .append(ex.getMessage())
                 .toString();
-        ControllerErrorResponseDTO errorResponse = new ControllerErrorResponseDTO.Builder()
+        ControllerErrorResDTO errorResponse = new ControllerErrorResDTO.Builder()
                 .setMsg(msg)
                 .setHttpStatus(ex.getHttpStatus())
                 .build();
