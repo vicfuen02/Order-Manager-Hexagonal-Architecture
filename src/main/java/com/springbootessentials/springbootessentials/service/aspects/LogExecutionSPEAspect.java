@@ -16,13 +16,13 @@ import java.util.stream.Collectors;
 
 @Component
 @Aspect
-public class LoggableSPEAspect {
+public class LogExecutionSPEAspect {
 
-    private Logger log = LogManager.getLogger(LoggableSPEAspect.class);
+    private static Logger log = LogManager.getLogger(LogExecutionSPEAspect.class);
     private Gson gson = new Gson();
 
-    @Pointcut("@annotation(com.springbootessentials.springbootessentials.common.annotations.LoggableSPE) || " +
-            "@within(com.springbootessentials.springbootessentials.common.annotations.LoggableSPE)")
+    @Pointcut("@annotation(com.springbootessentials.springbootessentials.common.annotations.LogExecutionSPE) || " +
+            "@within(com.springbootessentials.springbootessentials.common.annotations.LogExecutionSPE)")
     public void getLoggableClasses() {}
 
 

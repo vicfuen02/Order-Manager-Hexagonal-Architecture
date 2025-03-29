@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
         ElementType.TYPE,
         ElementType.METHOD
 })
-public @interface LoggableSPE {
+public @interface LogExecutionSPE {
 
 
 }

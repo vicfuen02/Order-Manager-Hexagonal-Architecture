@@ -2,27 +2,17 @@ package com.springbootessentials.springbootessentials.service.order.dto;
 
 import com.springbootessentials.springbootessentials.service.common.dto.CodeBDTO;
 
-public class OrderBDTO {
+public class SendOrderBDTO {
 
-    private Long id;
-    private String itemName;
+    private Long orderId;
     private CodeBDTO status;
 
-
-    public Long getId() {
-        return id;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getItemName() {
-        return itemName;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
     public CodeBDTO getStatus() {

@@ -74,13 +74,8 @@ public class CacheManagerServiceImpl implements CacheManagerService {
                 .allMatch(cache -> Boolean.parseBoolean(this.getCacheProperty(cache.getName() + CACHE_ENABLED_SUFIX)));
     }
 
-    public boolean getCacheAndEvict(String[] cacheEvictValues) {
-
-        if (cacheEvictValues == null) {
-            return false;
-        }
-
-        return Arrays.stream(cacheEvictValues)
+    public boolean getCacheAndEvict(String... cacheEvictValues) {
+        return cacheEvictValues != null && Arrays.stream(cacheEvictValues)
                 .allMatch(cacheToEvict -> this.evict(cacheToEvict + CACHE_EVICT_SUFIX));
     }
 
@@ -96,7 +91,7 @@ public class CacheManagerServiceImpl implements CacheManagerService {
         }
 
         Arrays.stream(properties.getProperty(cacheName).split(","))
-                .map(this.cacheManager::getCache) // Get Cache objects
+                .map(this.cacheManager::getCache)
                 .forEach(Cache::clear);
 
         return true;

@@ -12,7 +12,7 @@ public interface CacheManagerService {
     boolean areCachePropertyEnabled(List<Cache> caches);
     boolean isCacheEnabled();
 
-    boolean getCacheAndEvict(String[] cachesToEvic);
+    boolean getCacheAndEvict(String... cachesToEvic);
 
 
 }
