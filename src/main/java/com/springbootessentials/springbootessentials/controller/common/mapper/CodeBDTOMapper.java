@@ -14,9 +14,28 @@ public abstract class CodeBDTOMapper {
 
 //    @Mapping(target="code", source="code")
 //    @Mapping(target="desc", source="desc")
-    public abstract CodeRDTO toRDTO(CodeBDTO codeBDTO);
+    public CodeRDTO toRDTO(CodeBDTO codeBDTO) {
+        if (codeBDTO == null) {
+            return null;
+        }
+
+        return new CodeRDTO.Builder()
+                .setCode(codeBDTO.getCode())
+                .setDesc(codeBDTO.getDesc())
+                .build();
+    };
 
 
-    public abstract CodeBDTO toBDTO(CodeRDTO codeRDTO);
+    public CodeBDTO toBDTO(CodeRDTO codeRDTO) {
+        if (codeRDTO == null) {
+            return null;
+        }
+
+        return new CodeBDTO.Builder()
+                .setCode(codeRDTO.getCode())
+                .setDesc(codeRDTO.getDesc())
+                .build();
+
+    };
 
 }

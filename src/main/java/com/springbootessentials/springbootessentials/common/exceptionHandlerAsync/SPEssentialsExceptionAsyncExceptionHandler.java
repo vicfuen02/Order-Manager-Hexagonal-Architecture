@@ -12,6 +12,8 @@ import java.lang.reflect.Method;
 public class SPEssentialsExceptionAsyncExceptionHandler implements AsyncUncaughtExceptionHandler {
 
     private static final Logger log = LogManager.getLogger(SPEssentialsExceptionAsyncExceptionHandler.class);
+
+
     @Override
     public void handleUncaughtException(Throwable ex, Method method, Object... params) {
         log.error("An error occured in an async task. Handling it with SPEssentialsExceptionAsyncExceptionHandler");

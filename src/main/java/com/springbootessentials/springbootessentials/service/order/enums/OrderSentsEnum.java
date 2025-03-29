@@ -3,11 +3,10 @@ package com.springbootessentials.springbootessentials.service.order.enums;
 public enum OrderSentsEnum {
 
 
-    PENDING("ORS001"),
-    SENT_APPROVED("ORS002"),
-    SENT_INVALID("ORS003"),
-    NOT_SENT("ORS004")
-
+    NOT_SENT("ORS001"),
+    PENDING("ORS002"),
+    SENT_APPROVED("ORS003"),
+    SENT_INVALID("ORS004")
     ;
 
 

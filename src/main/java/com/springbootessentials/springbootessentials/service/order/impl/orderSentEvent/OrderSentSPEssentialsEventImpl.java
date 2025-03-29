@@ -1,22 +1,24 @@
 package com.springbootessentials.springbootessentials.service.order.impl.orderSentEvent;
 
-import com.springbootessentials.springbootessentials.service.events.Event;
-import com.springbootessentials.springbootessentials.service.events.EventListener;
+import com.springbootessentials.springbootessentials.common.annotations.LogExecutionSPE;
+import com.springbootessentials.springbootessentials.service.events.SPEssentialsEvent;
+import com.springbootessentials.springbootessentials.service.events.SPEssentialsEventListener;
 import com.springbootessentials.springbootessentials.service.order.OrderServiceCommand;
 import com.springbootessentials.springbootessentials.service.order.dto.OrderBDTO;
 import com.springbootessentials.springbootessentials.service.order.dto.SendOrderBDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@LogExecutionSPE
 @Component
-public class OrderSentEventImpl implements EventListener {
+public class OrderSentSPEssentialsEventImpl implements SPEssentialsEventListener {
 
     @Autowired
     private OrderServiceCommand orderService;
 
 
     @Override
-    public void update(Event evenEnum, Object data) {
+    public void update(SPEssentialsEvent evenEnum, Object data) {
 
         SendOrderBDTO orderSent = (SendOrderBDTO) data;
 

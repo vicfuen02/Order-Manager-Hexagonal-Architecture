@@ -5,7 +5,7 @@ public class Code {
     private String code;
     private String desc;
 
-    public Code() {
+    private Code() {
     }
 
     private Code(Builder builder) {

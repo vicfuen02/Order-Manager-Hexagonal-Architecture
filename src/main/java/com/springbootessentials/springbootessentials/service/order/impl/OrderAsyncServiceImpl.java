@@ -1,31 +1,35 @@
 package com.springbootessentials.springbootessentials.service.order.impl;
 
+import com.springbootessentials.springbootessentials.common.annotations.LogExecutionSPE;
+import com.springbootessentials.springbootessentials.common.exception.SPEssentialsExceptionFactory;
 import com.springbootessentials.springbootessentials.service.cache.CacheManagerService;
 import com.springbootessentials.springbootessentials.service.common.dto.CodeBDTO;
-import com.springbootessentials.springbootessentials.service.events.Event;
-import com.springbootessentials.springbootessentials.service.events.EventListener;
-import com.springbootessentials.springbootessentials.service.events.SendEventService;
+import com.springbootessentials.springbootessentials.service.events.SPEssentialsEvent;
+import com.springbootessentials.springbootessentials.service.events.SPEssentialsEventListener;
+import com.springbootessentials.springbootessentials.service.events.SendSPEssentialsEventService;
 import com.springbootessentials.springbootessentials.service.order.OrderAsyncService;
-import com.springbootessentials.springbootessentials.service.order.OrderSendExternalApi;
 import com.springbootessentials.springbootessentials.service.order.dto.SendOrderBDTO;
 import com.springbootessentials.springbootessentials.service.order.enums.OrderSentsEnum;
+import com.springbootessentials.springbootessentials.service.order.exceptions.OrderExceptionsEnum;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 
+@LogExecutionSPE
 @Async
 @Service
 public class OrderAsyncServiceImpl implements OrderAsyncService {
 
-//    @Autowired
-//    private OrderSendExternalApi orderSendExternalApi;
+    private static final Logger log = LogManager.getLogger(OrderAsyncServiceImpl.class);
 
     @Autowired
-    private SendEventService sendEventService;
+    private SendSPEssentialsEventService sendSPEssentialsEventService;
 
     @Autowired
-    private EventListener orderSentEvent;
+    private SPEssentialsEventListener orderSentEvent;
 
     @Autowired
     private CacheManagerService cacheManagerService;
@@ -33,28 +37,25 @@ public class OrderAsyncServiceImpl implements OrderAsyncService {
 
     public void sendOrderAsync(SendOrderBDTO order) {
 
-//        this.orderSendExternalApi.sendOrderToExternalApi(order);
-
-        this.sendEventService.subscribe(Event.ORDER_SENT, orderSentEvent);
+        this.sendSPEssentialsEventService.subscribe(SPEssentialsEvent.ORDER_SENT, orderSentEvent);
 
         SendOrderBDTO orderSent = new SendOrderBDTO();
         orderSent.setOrderId(order.getOrderId());
 
-        System.out.println("init sleep");
+        log.info("Calling external api");
         try {
             this.externalApi();
             orderSent.setStatus(new CodeBDTO.Builder().setCode(OrderSentsEnum.SENT_APPROVED.getCode()).build());
         } catch (RuntimeException e) {
             orderSent.setStatus(new CodeBDTO.Builder().setCode(OrderSentsEnum.SENT_INVALID.getCode()).build());
         }
-        System.out.println("end sleep");
+        log.info("Ending call external api");
 
-
-        this.sendEventService.notify(Event.ORDER_SENT, orderSent);
-        this.cacheManagerService.getCacheAndEvict(new String[] {"/order/sendOrder/{id}"});
+        this.sendSPEssentialsEventService.notify(SPEssentialsEvent.ORDER_SENT, orderSent);
+        this.cacheManagerService.getCacheAndEvict("/order/sendOrder/{id}");
 
         if (order.getOrderId() % 2 == 0) {
-            throw new RuntimeException("Exception in sendOrderAsync");
+            throw SPEssentialsExceptionFactory.throwException(OrderExceptionsEnum.ORDER_NOT_SENT);
         }
 
     }
@@ -62,7 +63,7 @@ public class OrderAsyncServiceImpl implements OrderAsyncService {
 
     private void externalApi() throws RuntimeException {
         try {
-            Thread.sleep(10000);
+            Thread.sleep(40000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

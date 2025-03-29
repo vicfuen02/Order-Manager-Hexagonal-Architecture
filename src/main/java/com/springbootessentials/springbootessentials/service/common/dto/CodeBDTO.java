@@ -1,13 +1,12 @@
 package com.springbootessentials.springbootessentials.service.common.dto;
 
-import com.springbootessentials.springbootessentials.repository.common.dto.Code;
 
 public class CodeBDTO {
 
     private String code;
     private String desc;
 
-    public CodeBDTO() {
+    private CodeBDTO() {
     }
 
     private CodeBDTO(CodeBDTO.Builder builder) {

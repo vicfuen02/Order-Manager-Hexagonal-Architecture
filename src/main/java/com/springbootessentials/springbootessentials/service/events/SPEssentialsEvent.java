@@ -1,6 +1,6 @@
 package com.springbootessentials.springbootessentials.service.events;
 
-public enum Event {
+public enum SPEssentialsEvent {
 
     ORDER_SENT
 

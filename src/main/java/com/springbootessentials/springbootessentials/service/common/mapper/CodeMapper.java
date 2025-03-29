@@ -1,22 +1,37 @@
 package com.springbootessentials.springbootessentials.service.common.mapper;
 
 
-import com.springbootessentials.springbootessentials.controller.common.mapper.CodeBDTOMapper;
 import com.springbootessentials.springbootessentials.repository.common.dto.Code;
 import com.springbootessentials.springbootessentials.service.common.dto.CodeBDTO;
-import org.mapstruct.Builder;
+
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public abstract class CodeMapper {
 
 
 
+    public Code toEntity(CodeBDTO codeBDTO) {
+        if (codeBDTO == null) {
+            return null;
+        }
 
-    public abstract Code toEntity(CodeBDTO codeBDTO);
+        return new Code.Builder()
+                .setCode(codeBDTO.getCode())
+                .setDesc(codeBDTO.getDesc())
+                .build();
 
-    public abstract CodeBDTO toBDTO(Code code);
+    };
+
+    public CodeBDTO toBDTO(Code code) {
+        if (code == null) {
+            return null;
+        }
+
+        return new CodeBDTO.Builder()
+                .setCode(code.getCode())
+                .setDesc(code.getDesc())
+                .build();
+    };
 
 }

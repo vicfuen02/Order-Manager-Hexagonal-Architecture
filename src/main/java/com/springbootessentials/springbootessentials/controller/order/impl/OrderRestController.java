@@ -42,7 +42,7 @@ public class OrderRestController extends OrderExceptionHandler {
 
     @CacheEvict(value={"/order/create"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", allEntries=true)
     @PostMapping
-    public Long createOrder(@RequestBody CreateOrderReqDTO order) {
+    public Long createOrder(@RequestBody OrderReqDTO order) {
 
         OrderBDTO orderBDTO = this.orderRestControllerMapper.toBTO(order);
         return this.orderService.createOrder(orderBDTO);
@@ -59,7 +59,7 @@ public class OrderRestController extends OrderExceptionHandler {
     @CacheEvict(value={"/order/{id}/update"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", allEntries = true)
 //    @CacheEvict(value={"/order/{id}", "/order"}, allEntries = true)
     @PutMapping("/{id}")
-    public Long updateOrder(@PathVariable Long id, @RequestBody UpdateOrderReqDTO order) {
+    public Long updateOrder(@PathVariable Long id, @RequestBody OrderReqDTO order) {
 
         order.setId(id);
         OrderBDTO orderBDTO = this.orderRestControllerMapper.toBTO(order);
