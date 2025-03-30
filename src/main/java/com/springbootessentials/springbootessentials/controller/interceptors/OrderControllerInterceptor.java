@@ -1,6 +1,5 @@
 package com.springbootessentials.springbootessentials.controller.interceptors;
 
-import com.springbootessentials.springbootessentials.service.order.impl.OrderAsyncServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
