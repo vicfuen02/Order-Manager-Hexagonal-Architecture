@@ -4,6 +4,7 @@ import com.springbootessentials.springbootessentials.common.annotations.LogExecu
 import com.springbootessentials.springbootessentials.repository.OrderJpaRepository;
 import com.springbootessentials.springbootessentials.repository.entity.OrderEntity;
 import com.springbootessentials.springbootessentials.service.common.dto.CodeBDTO;
+import com.springbootessentials.springbootessentials.service.common.dto.PageBDTO;
 import com.springbootessentials.springbootessentials.service.order.OrderAsyncService;
 import com.springbootessentials.springbootessentials.service.order.OrderService;
 import com.springbootessentials.springbootessentials.service.order.OrderServiceCommand;
@@ -12,6 +13,10 @@ import com.springbootessentials.springbootessentials.service.order.dto.SendOrder
 import com.springbootessentials.springbootessentials.service.order.enums.OrderSentsEnum;
 import com.springbootessentials.springbootessentials.service.order.mapper.OrderServiceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,16 +43,18 @@ public class OrderServiceImpl implements OrderService {
 
     public Long createOrder(OrderBDTO order) {
         OrderEntity orderEntity = this.orderServiceMapper.toEntity(order);
-//        return this.orderRepository.createOrder(orderEntity);
-
         OrderEntity orderCreated = this.orderJpaRepository.save(orderEntity);
         return orderCreated.getId();
     }
 
-    public List<OrderBDTO> getOrders() {
-//        List<OrderEntity> orders = this.orderRepository.getOrders();
-        List<OrderEntity> orders = this.orderJpaRepository.findAll();
-        return this.orderServiceMapper.toOrderListBDTO(orders);
+    public PageBDTO<OrderBDTO> getOrders(Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize,
+                Sort.by(
+                        Sort.Order.desc("itemName"),
+                        Sort.Order.desc("status.code")
+                ));
+        Page<OrderEntity> orders = this.orderJpaRepository.findAll(pageable);
+        return this.orderServiceMapper.toOrderPageBDTO(orders);
     }
 
     @Override
@@ -77,6 +84,11 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity orderEntity = this.orderServiceMapper.toEntity(orderEntityDTO);
         this.orderJpaRepository.delete(orderEntity);
         return orderId;
+    }
+
+    public List<OrderBDTO> findSentOrdersByAddressId(Long addressId) {
+        List<OrderEntity> orders = this.orderJpaRepository.findSentOrdersByAddressId(addressId);
+        return this.orderServiceMapper.toOrderListBDTO(orders);
     }
 
 
