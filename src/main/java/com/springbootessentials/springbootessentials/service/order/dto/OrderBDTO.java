@@ -1,5 +1,6 @@
 package com.springbootessentials.springbootessentials.service.order.dto;
 
+import com.springbootessentials.springbootessentials.service.address.dto.AddressBDTO;
 import com.springbootessentials.springbootessentials.service.common.dto.CodeBDTO;
 
 public class OrderBDTO {
@@ -7,6 +8,17 @@ public class OrderBDTO {
     private Long id;
     private String itemName;
     private CodeBDTO status;
+
+    private AddressBDTO address;
+
+
+    public AddressBDTO getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressBDTO address) {
+        this.address = address;
+    }
 
 
     public Long getId() {

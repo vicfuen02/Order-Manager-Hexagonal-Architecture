@@ -15,5 +15,6 @@ public interface OrderService {
     Long updateOrder(OrderBDTO order);
 
     OrderBDTO sendOrder(SendOrderBDTO order);
+    Long deleteOrder(Long orderId);
 
 }

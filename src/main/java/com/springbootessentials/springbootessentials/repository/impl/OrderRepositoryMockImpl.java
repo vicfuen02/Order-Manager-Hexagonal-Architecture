@@ -2,8 +2,8 @@ package com.springbootessentials.springbootessentials.repository.impl;
 
 import com.springbootessentials.springbootessentials.SpringbootessentialsApplication;
 import com.springbootessentials.springbootessentials.common.annotations.LogExecutionSPE;
-import com.springbootessentials.springbootessentials.repository.OrderRepository;
-import com.springbootessentials.springbootessentials.repository.dto.OrderEntity;
+import com.springbootessentials.springbootessentials.repository.OrderRepositoryMock;
+import com.springbootessentials.springbootessentials.repository.entity.OrderEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 @LogExecutionSPE
-public class OrderRepositoryImpl implements OrderRepository {
+public class OrderRepositoryMockImpl implements OrderRepositoryMock {
 
 
     @Override
@@ -48,7 +48,7 @@ public class OrderRepositoryImpl implements OrderRepository {
                 .findFirst().orElse(new OrderEntity());
 
         orderResult.setItemName(order.getItemName());
-        orderResult.setStatus(order.getStatus());
+//        orderResult.setStatus(order.getStatus());
         return order.getId();
     }
 }

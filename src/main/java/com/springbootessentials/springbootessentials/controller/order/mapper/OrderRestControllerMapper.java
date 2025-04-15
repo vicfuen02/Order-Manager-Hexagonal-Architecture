@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = { CodeBDTOMapper.class })
+@Mapper(componentModel = "spring")
 public abstract class OrderRestControllerMapper {
 
     public abstract OrderBDTO toBTO(OrderReqDTO order);

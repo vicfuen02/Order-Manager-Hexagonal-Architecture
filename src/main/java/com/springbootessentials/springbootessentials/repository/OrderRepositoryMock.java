@@ -1,11 +1,11 @@
 package com.springbootessentials.springbootessentials.repository;
 
-import com.springbootessentials.springbootessentials.repository.dto.OrderEntity;
+import com.springbootessentials.springbootessentials.repository.entity.OrderEntity;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface OrderRepository {
+public interface OrderRepositoryMock {
 
     Long createOrder(OrderEntity order);
 

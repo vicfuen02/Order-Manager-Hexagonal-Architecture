@@ -1,8 +1,6 @@
 package com.springbootessentials.springbootessentials;
 
-import com.springbootessentials.springbootessentials.repository.common.dto.Code;
-import com.springbootessentials.springbootessentials.repository.dto.OrderEntity;
-import com.springbootessentials.springbootessentials.service.order.enums.OrderSentsEnum;
+import com.springbootessentials.springbootessentials.repository.entity.OrderEntity;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -41,19 +39,19 @@ public class SpringbootessentialsApplication {
 		OrderEntity orderEntity1 = new OrderEntity();
 		orderEntity1.setId(1001L);
 		orderEntity1.setItemName("order 1");
-		orderEntity1.setStatus(new Code.Builder().setCode(OrderSentsEnum.NOT_SENT.getCode()).build());
+//		orderEntity1.setStatus(new CodeMock.Builder().setCode(OrderSentsEnum.NOT_SENT.getCode()).build());
 		orderEntities.add(orderEntity1);
 
 		OrderEntity orderEntity2 = new OrderEntity();
 		orderEntity2.setId(1002L);
 		orderEntity2.setItemName("order 2");
-		orderEntity2.setStatus(new Code.Builder().setCode(OrderSentsEnum.NOT_SENT.getCode()).build());
+//		orderEntity2.setStatus(new CodeMock.Builder().setCode(OrderSentsEnum.NOT_SENT.getCode()).build());
 		orderEntities.add(orderEntity2);
 
 		OrderEntity orderEntity3 = new OrderEntity();
 		orderEntity3.setId(1003L);
 		orderEntity3.setItemName("order 3");
-		orderEntity3.setStatus(new Code.Builder().setCode(OrderSentsEnum.NOT_SENT.getCode()).build());
+//		orderEntity3.setStatus(new CodeMock.Builder().setCode(OrderSentsEnum.NOT_SENT.getCode()).build());
 		orderEntities.add(orderEntity3);
 
 		return orderEntities;

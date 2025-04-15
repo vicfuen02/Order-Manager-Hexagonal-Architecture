@@ -1,5 +1,6 @@
 package com.springbootessentials.springbootessentials.controller.order.dto;
 
+import com.springbootessentials.springbootessentials.controller.address.dto.AddressResDTO;
 import com.springbootessentials.springbootessentials.controller.common.dto.CodeRDTO;
 
 public class OrderResDTO {
@@ -8,6 +9,16 @@ public class OrderResDTO {
     private String itemName;
     private CodeRDTO status;
 
+    private AddressResDTO address;
+
+
+    public AddressResDTO getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressResDTO address) {
+        this.address = address;
+    }
 
     public Long getId() {
         return id;

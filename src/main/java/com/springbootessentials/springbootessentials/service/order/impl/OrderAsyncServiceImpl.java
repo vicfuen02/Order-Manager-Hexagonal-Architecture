@@ -45,9 +45,9 @@ public class OrderAsyncServiceImpl implements OrderAsyncService {
         log.info("Calling external api");
         try {
             this.externalApi();
-            orderSent.setStatus(new CodeBDTO.Builder().setCode(OrderSentsEnum.SENT_APPROVED.getCode()).build());
+            orderSent.setStatus(new CodeBDTO(OrderSentsEnum.SENT_APPROVED.getCode(), null));
         } catch (RuntimeException e) {
-            orderSent.setStatus(new CodeBDTO.Builder().setCode(OrderSentsEnum.SENT_INVALID.getCode()).build());
+            orderSent.setStatus(new CodeBDTO(OrderSentsEnum.SENT_INVALID.getCode(), null));
         }
         log.info("Ending call external api");
 
@@ -63,7 +63,7 @@ public class OrderAsyncServiceImpl implements OrderAsyncService {
 
     private void externalApi() throws RuntimeException {
         try {
-            Thread.sleep(40000);
+            Thread.sleep(20000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

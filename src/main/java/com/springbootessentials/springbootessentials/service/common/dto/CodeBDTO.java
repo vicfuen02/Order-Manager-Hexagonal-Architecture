@@ -6,12 +6,12 @@ public class CodeBDTO {
     private String code;
     private String desc;
 
-    private CodeBDTO() {
+    public CodeBDTO() {
     }
 
-    private CodeBDTO(CodeBDTO.Builder builder) {
-        this.code = builder.code;
-        this.desc = builder.desc;
+    public CodeBDTO(String code, String desc) {
+        this.code = code;
+        this.desc = desc;
     }
 
     public String getCode() {
@@ -32,30 +32,4 @@ public class CodeBDTO {
 
 
 
-    public static class Builder {
-        private String code;
-        private String desc;
-        public String getCode() {
-            return code;
-        }
-
-        public CodeBDTO.Builder setCode(String code) {
-            this.code = code;
-            return this;
-        }
-
-        public String getDesc() {
-            return desc;
-        }
-
-        public CodeBDTO.Builder setDesc(String desc) {
-            this.desc = desc;
-            return this;
-        }
-
-        public CodeBDTO build() {
-            return new CodeBDTO(this);
-        }
-
-    }
 }

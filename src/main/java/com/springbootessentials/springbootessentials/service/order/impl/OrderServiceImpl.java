@@ -1,8 +1,8 @@
 package com.springbootessentials.springbootessentials.service.order.impl;
 
 import com.springbootessentials.springbootessentials.common.annotations.LogExecutionSPE;
-import com.springbootessentials.springbootessentials.repository.OrderRepository;
-import com.springbootessentials.springbootessentials.repository.dto.OrderEntity;
+import com.springbootessentials.springbootessentials.repository.OrderJpaRepository;
+import com.springbootessentials.springbootessentials.repository.entity.OrderEntity;
 import com.springbootessentials.springbootessentials.service.common.dto.CodeBDTO;
 import com.springbootessentials.springbootessentials.service.order.OrderAsyncService;
 import com.springbootessentials.springbootessentials.service.order.OrderService;
@@ -21,14 +21,15 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
 
-    private OrderRepository orderRepository;
+//    private OrderRepositoryMock orderRepository;
     private OrderServiceMapper orderServiceMapper;
     private OrderServiceCommand orderServiceCommand;
     private OrderAsyncService orderAsyncService;
+    private OrderJpaRepository orderJpaRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, OrderServiceMapper orderServiceMapper, OrderServiceCommand orderServiceCommand, OrderAsyncService orderAsyncService) {
-        this.orderRepository = orderRepository;
+    public OrderServiceImpl(OrderJpaRepository orderJpaRepository, /*OrderRepositoryMock orderRepository,*/ OrderServiceMapper orderServiceMapper, OrderServiceCommand orderServiceCommand, OrderAsyncService orderAsyncService) {
+        this.orderJpaRepository = orderJpaRepository;
         this.orderServiceMapper = orderServiceMapper;
         this.orderServiceCommand = orderServiceCommand;
         this.orderAsyncService = orderAsyncService;
@@ -37,11 +38,15 @@ public class OrderServiceImpl implements OrderService {
 
     public Long createOrder(OrderBDTO order) {
         OrderEntity orderEntity = this.orderServiceMapper.toEntity(order);
-        return this.orderRepository.createOrder(orderEntity);
+//        return this.orderRepository.createOrder(orderEntity);
+
+        OrderEntity orderCreated = this.orderJpaRepository.save(orderEntity);
+        return orderCreated.getId();
     }
 
     public List<OrderBDTO> getOrders() {
-        List<OrderEntity> orders = this.orderRepository.getOrders();
+//        List<OrderEntity> orders = this.orderRepository.getOrders();
+        List<OrderEntity> orders = this.orderJpaRepository.findAll();
         return this.orderServiceMapper.toOrderListBDTO(orders);
     }
 
@@ -58,12 +63,20 @@ public class OrderServiceImpl implements OrderService {
     public OrderBDTO sendOrder(SendOrderBDTO sendOrder) {
 
         OrderBDTO order = this.getOrderById(sendOrder.getOrderId());
-        order.setStatus(new CodeBDTO.Builder().setCode(OrderSentsEnum.PENDING.getCode()).build());
+        order.setStatus(new CodeBDTO(OrderSentsEnum.PENDING.getCode(), null));
         this.updateOrder(order);
 
         this.orderAsyncService.sendOrderAsync(sendOrder);
 
-        return order;
+        return this.getOrderById(order.getId());
+    }
+
+    public Long deleteOrder(Long orderId) {
+
+        OrderBDTO orderEntityDTO = this.orderServiceCommand.getOrderById(orderId);
+        OrderEntity orderEntity = this.orderServiceMapper.toEntity(orderEntityDTO);
+        this.orderJpaRepository.delete(orderEntity);
+        return orderId;
     }
 
 

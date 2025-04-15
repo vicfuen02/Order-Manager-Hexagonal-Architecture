@@ -66,6 +66,12 @@ public class OrderRestController extends OrderExceptionHandler {
         return this.orderService.updateOrder(orderBDTO);
     }
 
+    @CacheEvict(value={"/order/delete/{id}"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", allEntries=true)
+    @DeleteMapping("/{id}")
+    public Long deleteOrder(@PathVariable Long id) {
+        return this.orderService.deleteOrder(id);
+    }
+
 
     @CacheEvict(value={"/order/sendOrder/{id}"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)")
     @PostMapping("/sendOrder/{id}")
