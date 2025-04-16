@@ -4,7 +4,6 @@ import com.springbootessentials.springbootessentials.common.annotations.LogExecu
 import com.springbootessentials.springbootessentials.controller.address.dto.AddressReqDTO;
 import com.springbootessentials.springbootessentials.controller.address.dto.AddressResDTO;
 import com.springbootessentials.springbootessentials.controller.address.mapper.AddressRestControllerMapper;
-import com.springbootessentials.springbootessentials.controller.common.exceptionHanlder.BaseExceptionHandler;
 import com.springbootessentials.springbootessentials.service.address.AddressService;
 import com.springbootessentials.springbootessentials.service.address.dto.AddressBDTO;
 import org.springframework.beans.factory.annotation.Autowired;

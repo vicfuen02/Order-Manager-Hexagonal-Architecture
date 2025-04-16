@@ -1,4 +1,4 @@
-package com.springbootessentials.springbootessentials.repository;
+package com.springbootessentials.springbootessentials.repository.orderAdapter;
 
 import com.springbootessentials.springbootessentials.repository.entity.OrderEntity;
 import com.springbootessentials.springbootessentials.service.common.dto.PageBDTO;
@@ -6,7 +6,9 @@ import com.springbootessentials.springbootessentials.service.common.dto.PageBDTO
 import java.util.List;
 import java.util.Optional;
 
-public interface OrderRepositoryMock {
+public interface OrderDao {
+
+
 
     Long createOrder(OrderEntity order);
 
@@ -16,8 +18,7 @@ public interface OrderRepositoryMock {
     Long updateOrder(OrderEntity order);
 
     List<OrderEntity> findSentOrdersByAddressId(Long id);
-
-    Long deleteOrder(Long id);
+    Long deleteOrder(OrderEntity orderId);
 
 
 }

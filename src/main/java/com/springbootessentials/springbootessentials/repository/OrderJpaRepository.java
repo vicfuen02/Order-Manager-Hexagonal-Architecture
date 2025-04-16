@@ -24,11 +24,12 @@ public interface OrderJpaRepository extends JpaRepository<OrderEntity, Long> {
 
 
     @Query(value=
-            "SELECT o " +
-            "FROM OrderEntity o " +
-                    "JOIN FETCH AddressEntity a ON a.id = o.address.id " +
-            "WHERE o.status.code = 'ORS001' " +
-                    "AND a.id = :addressId"
+            " SELECT o " +
+            " FROM OrderEntity o " +
+                    " JOIN FETCH o.address a " +
+                    " JOIN FETCH o.status s " +
+            " WHERE s.code = 'ORS004' " +
+                    " AND a.id = :addressId"
     )
     List<OrderEntity> findSentOrdersByAddressId(@Param("addressId") Long id);
 

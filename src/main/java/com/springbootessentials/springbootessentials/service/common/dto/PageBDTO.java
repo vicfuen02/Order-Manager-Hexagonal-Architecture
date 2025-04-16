@@ -13,6 +13,11 @@ public class PageBDTO<T> {
     public PageBDTO() {
     }
 
+    public PageBDTO(Page<T> pageable) {
+        this.content = pageable.getContent();
+        this.totalElements = pageable.getTotalElements();
+        this.totalPages = pageable.getTotalPages();
+    }
 
     public PageBDTO(List<T> content, long totalElements, int totalPages) {
         this.content = content;

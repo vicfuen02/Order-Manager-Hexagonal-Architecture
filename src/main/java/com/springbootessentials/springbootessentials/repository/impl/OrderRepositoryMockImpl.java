@@ -4,8 +4,10 @@ import com.springbootessentials.springbootessentials.SpringbootessentialsApplica
 import com.springbootessentials.springbootessentials.common.annotations.LogExecutionSPE;
 import com.springbootessentials.springbootessentials.repository.OrderRepositoryMock;
 import com.springbootessentials.springbootessentials.repository.entity.OrderEntity;
+import com.springbootessentials.springbootessentials.service.common.dto.PageBDTO;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,7 +19,7 @@ public class OrderRepositoryMockImpl implements OrderRepositoryMock {
     @Override
     public Long createOrder(OrderEntity order) {
 
-        Long nextId = this.getOrders().stream()
+        Long nextId = SpringbootessentialsApplication.getOrders().stream()
                 .reduce((first, second) -> second)
                 .map(OrderEntity::getId)
                 .orElse(1000L) + 1L;
@@ -27,9 +29,26 @@ public class OrderRepositoryMockImpl implements OrderRepositoryMock {
         return order.getId();
     }
 
+
     @Override
-    public List<OrderEntity> getOrders() {
-        return SpringbootessentialsApplication.getOrders();
+    public PageBDTO<OrderEntity> getOrders(Integer pageNumber, Integer pageSize) {
+
+        if (pageSize <= 0) {
+            pageSize = 0;
+        }
+
+        List<OrderEntity> pagedList = new ArrayList<>();
+        List<OrderEntity> list = SpringbootessentialsApplication.getOrders();
+        int fromIndex = (pageNumber) * pageSize;
+        int toIndex = Math.min(fromIndex + pageSize, list.size());
+
+        int totalPages = (int) Math.ceil((double) list.size() / pageSize);
+
+        if (fromIndex >= list.size() || fromIndex < 0) {
+            return new PageBDTO<>(List.of(), 0, 0);
+        }
+
+        return new PageBDTO<>(list.subList(fromIndex, toIndex), list.size(), totalPages);
     }
 
     @Override
@@ -48,7 +67,19 @@ public class OrderRepositoryMockImpl implements OrderRepositoryMock {
                 .findFirst().orElse(new OrderEntity());
 
         orderResult.setItemName(order.getItemName());
-//        orderResult.setStatus(order.getStatus());
+        orderResult.setStatus(order.getStatus());
         return order.getId();
+    }
+
+    @Override
+    public List<OrderEntity> findSentOrdersByAddressId(Long id) {
+        // TODO
+        return null;
+    }
+
+    @Override
+    public Long deleteOrder(Long id) {
+        // TODO
+        return null;
     }
 }

@@ -20,7 +20,7 @@ public abstract class OrderServiceMapper {
     @Mapping(target = "address", ignore = true)
     public abstract OrderBDTO toBDTOWithoutAddress(OrderEntity orderEntity);
     public abstract List<OrderBDTO> toOrderListBDTO(List<OrderEntity> orderEntity);
-    public PageBDTO<OrderBDTO> toOrderPageBDTO(Page<OrderEntity> orderEntity) {
+    public PageBDTO<OrderBDTO> toOrderPageBDTO(PageBDTO<OrderEntity> orderEntity) {
         return new PageBDTO<>(
                 this.toOrderListBDTO(orderEntity.getContent()),
                 orderEntity.getTotalElements(),

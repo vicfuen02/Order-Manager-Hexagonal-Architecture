@@ -1,8 +1,8 @@
 package com.springbootessentials.springbootessentials.service.order.impl;
 
 import com.springbootessentials.springbootessentials.common.annotations.LogExecutionSPE;
-import com.springbootessentials.springbootessentials.repository.OrderJpaRepository;
 import com.springbootessentials.springbootessentials.repository.entity.OrderEntity;
+import com.springbootessentials.springbootessentials.repository.orderAdapter.OrderDao;
 import com.springbootessentials.springbootessentials.service.common.dto.CodeBDTO;
 import com.springbootessentials.springbootessentials.service.common.dto.PageBDTO;
 import com.springbootessentials.springbootessentials.service.order.OrderAsyncService;
@@ -13,10 +13,6 @@ import com.springbootessentials.springbootessentials.service.order.dto.SendOrder
 import com.springbootessentials.springbootessentials.service.order.enums.OrderSentsEnum;
 import com.springbootessentials.springbootessentials.service.order.mapper.OrderServiceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,15 +22,14 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
 
-//    private OrderRepositoryMock orderRepository;
     private OrderServiceMapper orderServiceMapper;
     private OrderServiceCommand orderServiceCommand;
     private OrderAsyncService orderAsyncService;
-    private OrderJpaRepository orderJpaRepository;
+    private OrderDao orderDao;
 
     @Autowired
-    public OrderServiceImpl(OrderJpaRepository orderJpaRepository, /*OrderRepositoryMock orderRepository,*/ OrderServiceMapper orderServiceMapper, OrderServiceCommand orderServiceCommand, OrderAsyncService orderAsyncService) {
-        this.orderJpaRepository = orderJpaRepository;
+    public OrderServiceImpl(OrderDao orderDao, OrderServiceMapper orderServiceMapper, OrderServiceCommand orderServiceCommand, OrderAsyncService orderAsyncService) {
+        this.orderDao = orderDao;
         this.orderServiceMapper = orderServiceMapper;
         this.orderServiceCommand = orderServiceCommand;
         this.orderAsyncService = orderAsyncService;
@@ -43,18 +38,13 @@ public class OrderServiceImpl implements OrderService {
 
     public Long createOrder(OrderBDTO order) {
         OrderEntity orderEntity = this.orderServiceMapper.toEntity(order);
-        OrderEntity orderCreated = this.orderJpaRepository.save(orderEntity);
-        return orderCreated.getId();
+        Long orderId = this.orderDao.createOrder(orderEntity);
+        return orderId;
     }
 
     public PageBDTO<OrderBDTO> getOrders(Integer pageNumber, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize,
-                Sort.by(
-                        Sort.Order.desc("itemName"),
-                        Sort.Order.desc("status.code")
-                ));
-        Page<OrderEntity> orders = this.orderJpaRepository.findAll(pageable);
-        return this.orderServiceMapper.toOrderPageBDTO(orders);
+        PageBDTO<OrderEntity> pageOrders = this.orderDao.getOrders(pageNumber, pageSize);
+        return this.orderServiceMapper.toOrderPageBDTO(pageOrders);
     }
 
     @Override
@@ -82,12 +72,12 @@ public class OrderServiceImpl implements OrderService {
 
         OrderBDTO orderEntityDTO = this.orderServiceCommand.getOrderById(orderId);
         OrderEntity orderEntity = this.orderServiceMapper.toEntity(orderEntityDTO);
-        this.orderJpaRepository.delete(orderEntity);
+        this.orderDao.deleteOrder(orderEntity);
         return orderId;
     }
 
     public List<OrderBDTO> findSentOrdersByAddressId(Long addressId) {
-        List<OrderEntity> orders = this.orderJpaRepository.findSentOrdersByAddressId(addressId);
+        List<OrderEntity> orders = this.orderDao.findSentOrdersByAddressId(addressId);
         return this.orderServiceMapper.toOrderListBDTO(orders);
     }
 

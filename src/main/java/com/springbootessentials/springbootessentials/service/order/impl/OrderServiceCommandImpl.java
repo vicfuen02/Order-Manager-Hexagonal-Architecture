@@ -3,6 +3,7 @@ package com.springbootessentials.springbootessentials.service.order.impl;
 import com.springbootessentials.springbootessentials.common.exception.SPEssentialsExceptionFactory;
 import com.springbootessentials.springbootessentials.repository.OrderJpaRepository;
 import com.springbootessentials.springbootessentials.repository.entity.OrderEntity;
+import com.springbootessentials.springbootessentials.repository.orderAdapter.OrderDao;
 import com.springbootessentials.springbootessentials.service.order.OrderServiceCommand;
 import com.springbootessentials.springbootessentials.service.order.dto.OrderBDTO;
 import com.springbootessentials.springbootessentials.service.order.exceptions.InvalidOrderIdSPEssentialsException;
@@ -17,12 +18,12 @@ public class OrderServiceCommandImpl implements OrderServiceCommand {
 
 
 //    private OrderRepositoryMock orderRepository;
-    private OrderJpaRepository orderJpaRepository;
+    private OrderDao orderDao;
     private OrderServiceMapper orderServiceMapper;
 
     @Autowired
-    public OrderServiceCommandImpl(OrderJpaRepository orderJpaRepository, OrderServiceMapper orderServiceMapper) {
-        this.orderJpaRepository = orderJpaRepository;
+    public OrderServiceCommandImpl(OrderDao orderDao, OrderServiceMapper orderServiceMapper) {
+        this.orderDao = orderDao;
         this.orderServiceMapper = orderServiceMapper;
     }
 
@@ -34,7 +35,7 @@ public class OrderServiceCommandImpl implements OrderServiceCommand {
             throw new InvalidOrderIdSPEssentialsException();
         }
 
-        OrderEntity orderEntity = this.orderJpaRepository.findById(id)
+        OrderEntity orderEntity = this.orderDao.getOrderById(id)
                 .orElseThrow(() -> SPEssentialsExceptionFactory.throwException(OrderExceptionsEnum.ORDER_NOT_FOUND));
 
         return this.orderServiceMapper.toBDTO(orderEntity);
@@ -42,8 +43,8 @@ public class OrderServiceCommandImpl implements OrderServiceCommand {
 
     public Long updateOrder(OrderBDTO order) {
         OrderEntity orderEntity = this.orderServiceMapper.toEntity(order);
-        OrderEntity orderUpdated = this.orderJpaRepository.save(orderEntity);
-        return orderUpdated.getId();
+        Long orderId = this.orderDao.updateOrder(orderEntity);
+        return orderId;
     }
 
 }
