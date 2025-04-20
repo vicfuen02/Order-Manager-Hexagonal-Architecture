@@ -4,13 +4,14 @@ package com.springbootessentials.springbootessentials.config;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 
 
 
 
-//@EnableJpaRepositories
+@EnableJpaAuditing
 @EnableCaching
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableAsync

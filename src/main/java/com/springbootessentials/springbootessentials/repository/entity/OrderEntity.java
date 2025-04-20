@@ -17,7 +17,7 @@ import java.util.Objects;
         }
 )
 @Entity
-public class OrderEntity implements Serializable {
+public class OrderEntity extends AuditEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="seq_user_id_gen")

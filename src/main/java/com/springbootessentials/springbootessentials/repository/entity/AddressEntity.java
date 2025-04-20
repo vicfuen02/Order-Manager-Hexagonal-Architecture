@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @Table(name="SPE_ADDRESS", schema="SPE_SCHEMA")
 @Entity
-public class AddressEntity implements Serializable {
+public class AddressEntity extends AuditEntity implements Serializable {
 
 
     @Id

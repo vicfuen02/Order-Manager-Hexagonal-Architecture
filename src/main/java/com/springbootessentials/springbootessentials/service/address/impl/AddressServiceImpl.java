@@ -9,6 +9,7 @@ import com.springbootessentials.springbootessentials.service.address.exceptions.
 import com.springbootessentials.springbootessentials.service.address.mapper.AddressServiceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class AddressServiceImpl implements AddressService {
 
     private AddressJpaRepository addressJpaRepository;
     private AddressServiceMapper addressServiceMapper;
+
 
     @Autowired
     public AddressServiceImpl(AddressJpaRepository addressJpaRepository, AddressServiceMapper addressServiceMapper) {
@@ -31,6 +33,7 @@ public class AddressServiceImpl implements AddressService {
         return this.addressServiceMapper.toBDTOList(addressList);
     }
 
+    @Transactional
     @Override
     public Long createAddress(AddressBDTO address) {
         return this.addressJpaRepository.save(
@@ -38,6 +41,7 @@ public class AddressServiceImpl implements AddressService {
         ).getId();
     }
 
+    @Transactional
     @Override
     public Long deleteAddress(Long id) {
         AddressEntity address = this.addressJpaRepository.findById(id)
@@ -46,6 +50,7 @@ public class AddressServiceImpl implements AddressService {
         return id;
     }
 
+    @Transactional
     @Override
     public Long updateAddress(AddressBDTO address) {
         return this.addressServiceMapper.toBDTO(

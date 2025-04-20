@@ -11,13 +11,13 @@ import com.springbootessentials.springbootessentials.service.order.exceptions.Or
 import com.springbootessentials.springbootessentials.service.order.mapper.OrderServiceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
 public class OrderServiceCommandImpl implements OrderServiceCommand {
 
 
-//    private OrderRepositoryMock orderRepository;
     private OrderDao orderDao;
     private OrderServiceMapper orderServiceMapper;
 
@@ -41,6 +41,8 @@ public class OrderServiceCommandImpl implements OrderServiceCommand {
         return this.orderServiceMapper.toBDTO(orderEntity);
     }
 
+
+    @Transactional
     public Long updateOrder(OrderBDTO order) {
         OrderEntity orderEntity = this.orderServiceMapper.toEntity(order);
         Long orderId = this.orderDao.updateOrder(orderEntity);

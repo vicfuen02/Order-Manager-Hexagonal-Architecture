@@ -14,6 +14,7 @@ import com.springbootessentials.springbootessentials.service.order.enums.OrderSe
 import com.springbootessentials.springbootessentials.service.order.mapper.OrderServiceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
         this.orderAsyncService = orderAsyncService;
     }
 
-
+    @Transactional
     public Long createOrder(OrderBDTO order) {
         OrderEntity orderEntity = this.orderServiceMapper.toEntity(order);
         Long orderId = this.orderDao.createOrder(orderEntity);
@@ -52,6 +53,7 @@ public class OrderServiceImpl implements OrderService {
         return this.orderServiceCommand.getOrderById(id);
     }
 
+    @Transactional
     public Long updateOrder(OrderBDTO order) {
         return this.orderServiceCommand.updateOrder(order);
     }
@@ -68,6 +70,7 @@ public class OrderServiceImpl implements OrderService {
         return this.getOrderById(order.getId());
     }
 
+    @Transactional
     public Long deleteOrder(Long orderId) {
 
         OrderBDTO orderEntityDTO = this.orderServiceCommand.getOrderById(orderId);
