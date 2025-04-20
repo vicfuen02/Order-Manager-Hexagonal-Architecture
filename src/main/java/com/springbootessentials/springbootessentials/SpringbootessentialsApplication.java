@@ -1,6 +1,6 @@
 package com.springbootessentials.springbootessentials;
 
-import com.springbootessentials.springbootessentials.repository.entity.OrderEntity;
+import com.springbootessentials.springbootessentials.infrastructure.adapter.output.persistance.entity.OrderEntity;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
