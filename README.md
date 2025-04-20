@@ -6,8 +6,8 @@ This service allows to create and retrieve orders while simulating sending them 
 
 ## 🎯 Main goals
 
-* Build a REST API for managing orders
-* Follow clean code principles and best practices as well as design patterns:
+* Build a RESTful API for managing orders
+* Follow clean codeEntity principles and best practices as well as design patterns:
   * Layer architecture (Controller → Service → Repository)
   * Design Patterns:
     * Factory Pattern for centralized exception creation
@@ -29,3 +29,4 @@ This service allows to create and retrieve orders while simulating sending them 
 * Java 23
 * Maven
 * Log4j2
+* H2 in memory DB

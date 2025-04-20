@@ -1,8 +1,11 @@
 package com.springbootessentials.springbootessentials.controller.order.impl;
 
 import com.springbootessentials.springbootessentials.common.annotations.LogExecutionSPE;
+import com.springbootessentials.springbootessentials.controller.common.dto.PageResDTO;
 import com.springbootessentials.springbootessentials.controller.order.dto.*;
 import com.springbootessentials.springbootessentials.controller.order.mapper.OrderRestControllerMapper;
+import com.springbootessentials.springbootessentials.repository.entity.OrderEntity;
+import com.springbootessentials.springbootessentials.service.common.dto.PageBDTO;
 import com.springbootessentials.springbootessentials.service.order.OrderService;
 import com.springbootessentials.springbootessentials.service.order.dto.OrderBDTO;
 import com.springbootessentials.springbootessentials.service.order.dto.SendOrderBDTO;
@@ -11,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,10 +38,12 @@ public class OrderRestController extends OrderExceptionHandler {
 
     @Cacheable(value={"/order"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", key="#root.target.getCacheKey(#root.caches, #root.target.class.name, #root.method.name, #root.args)")
     @GetMapping
-    public List<OrderResDTO> getOrders() {
+    public PageResDTO<OrderResDTO> getOrders(
+            @RequestParam(name="pageNumber", required = false, defaultValue = "0") Integer pageNumber,
+            @RequestParam(name="pageSize", required = false, defaultValue = "100") Integer pageSize) {
 
-        List<OrderBDTO> orderList = this.orderService.getOrders();
-        return this.orderRestControllerMapper.orderListToResDTO(orderList);
+        PageBDTO<OrderBDTO> orderList = this.orderService.getOrders(pageNumber, pageSize);
+        return this.orderRestControllerMapper.orderPageToResDTO(orderList);
     }
 
     @CacheEvict(value={"/order/create"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", allEntries=true)
@@ -66,6 +72,12 @@ public class OrderRestController extends OrderExceptionHandler {
         return this.orderService.updateOrder(orderBDTO);
     }
 
+    @CacheEvict(value={"/order/delete/{id}"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", allEntries=true)
+    @DeleteMapping("/{id}")
+    public Long deleteOrder(@PathVariable Long id) {
+        return this.orderService.deleteOrder(id);
+    }
+
 
     @CacheEvict(value={"/order/sendOrder/{id}"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)")
     @PostMapping("/sendOrder/{id}")
@@ -75,6 +87,13 @@ public class OrderRestController extends OrderExceptionHandler {
         SendOrderBDTO orderBDTO = this.orderRestControllerMapper.toBTO(sendOrder);
         OrderBDTO res = this.orderService.sendOrder(orderBDTO);
         return this.orderRestControllerMapper.toResDTO(res);
+    }
+
+
+    @GetMapping("/sentOrders")
+    public List<OrderResDTO> findSentOrdersByAddressId(@RequestParam(name="addressId") Long addressId) {
+        List<OrderBDTO> orders = this.orderService.findSentOrdersByAddressId(addressId);
+        return this.orderRestControllerMapper.orderListToResDTO(orders);
     }
 
 }

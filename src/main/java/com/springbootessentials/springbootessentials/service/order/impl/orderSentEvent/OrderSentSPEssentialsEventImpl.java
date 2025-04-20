@@ -8,6 +8,7 @@ import com.springbootessentials.springbootessentials.service.order.dto.OrderBDTO
 import com.springbootessentials.springbootessentials.service.order.dto.SendOrderBDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @LogExecutionSPE
 @Component
@@ -17,6 +18,7 @@ public class OrderSentSPEssentialsEventImpl implements SPEssentialsEventListener
     private OrderServiceCommand orderService;
 
 
+    @Transactional
     @Override
     public void update(SPEssentialsEvent evenEnum, Object data) {
 

@@ -1,8 +1,9 @@
 package com.springbootessentials.springbootessentials.service.order.impl;
 
 import com.springbootessentials.springbootessentials.common.exception.SPEssentialsExceptionFactory;
-import com.springbootessentials.springbootessentials.repository.OrderRepository;
-import com.springbootessentials.springbootessentials.repository.dto.OrderEntity;
+import com.springbootessentials.springbootessentials.repository.OrderJpaRepository;
+import com.springbootessentials.springbootessentials.repository.entity.OrderEntity;
+import com.springbootessentials.springbootessentials.repository.orderAdapter.OrderDao;
 import com.springbootessentials.springbootessentials.service.order.OrderServiceCommand;
 import com.springbootessentials.springbootessentials.service.order.dto.OrderBDTO;
 import com.springbootessentials.springbootessentials.service.order.exceptions.InvalidOrderIdSPEssentialsException;
@@ -10,18 +11,19 @@ import com.springbootessentials.springbootessentials.service.order.exceptions.Or
 import com.springbootessentials.springbootessentials.service.order.mapper.OrderServiceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
 public class OrderServiceCommandImpl implements OrderServiceCommand {
 
 
-    private OrderRepository orderRepository;
+    private OrderDao orderDao;
     private OrderServiceMapper orderServiceMapper;
 
     @Autowired
-    public OrderServiceCommandImpl(OrderRepository orderRepository, OrderServiceMapper orderServiceMapper) {
-        this.orderRepository = orderRepository;
+    public OrderServiceCommandImpl(OrderDao orderDao, OrderServiceMapper orderServiceMapper) {
+        this.orderDao = orderDao;
         this.orderServiceMapper = orderServiceMapper;
     }
 
@@ -33,15 +35,18 @@ public class OrderServiceCommandImpl implements OrderServiceCommand {
             throw new InvalidOrderIdSPEssentialsException();
         }
 
-        OrderEntity orderEntity = this.orderRepository.getOrderById(id)
+        OrderEntity orderEntity = this.orderDao.getOrderById(id)
                 .orElseThrow(() -> SPEssentialsExceptionFactory.throwException(OrderExceptionsEnum.ORDER_NOT_FOUND));
 
         return this.orderServiceMapper.toBDTO(orderEntity);
     }
 
+
+    @Transactional
     public Long updateOrder(OrderBDTO order) {
         OrderEntity orderEntity = this.orderServiceMapper.toEntity(order);
-        return this.orderRepository.updateOrder(orderEntity);
+        Long orderId = this.orderDao.updateOrder(orderEntity);
+        return orderId;
     }
 
 }
