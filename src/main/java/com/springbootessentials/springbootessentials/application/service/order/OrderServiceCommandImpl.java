@@ -2,6 +2,7 @@ package com.springbootessentials.springbootessentials.application.service.order;
 
 import com.springbootessentials.springbootessentials.application.ports.input.order.OrderServiceCommand;
 import com.springbootessentials.springbootessentials.application.service.exception.SPEssentialsExceptionFactory;
+import com.springbootessentials.springbootessentials.common.annotations.LogExecutionSPE;
 import com.springbootessentials.springbootessentials.infrastructure.adapter.output.persistance.entity.OrderEntity;
 import com.springbootessentials.springbootessentials.application.ports.output.order.OrderDao;
 import com.springbootessentials.springbootessentials.domain.order.Order;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+@LogExecutionSPE
 @Service
 public class OrderServiceCommandImpl implements OrderServiceCommand {
 

@@ -9,6 +9,7 @@ import com.springbootessentials.springbootessentials.application.ports.input.add
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class AddressRestController extends AddressExceptionHandler  {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @Cacheable(value={"/address"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", key="#root.target.getCacheKey(#root.caches, #root.target.class.name, #root.method.name, #root.args)")
     @GetMapping
     public List<AddressResDTO> getAll() {
@@ -36,6 +38,8 @@ public class AddressRestController extends AddressExceptionHandler  {
         return addressRestControllerMapper.toResDTOList(addressList);
     }
 
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @CacheEvict(value={"/address/create"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", allEntries=true)
     @PostMapping
     public Long createAddress(@RequestBody AddressReqDTO addressReqDTO) {
@@ -43,6 +47,7 @@ public class AddressRestController extends AddressExceptionHandler  {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @CacheEvict(value={"/address/{id}/update"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", allEntries = true)
     @PutMapping("/{id}")
     public Long updateAddress(@PathVariable Long id, @RequestBody AddressReqDTO address) {
@@ -52,6 +57,8 @@ public class AddressRestController extends AddressExceptionHandler  {
         return this.addressService.updateAddress(addressBDTO);
     }
 
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @CacheEvict(value={"/address/delete/{id}"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", allEntries=true)
     @DeleteMapping("/{id}")
     public Long deleteAddress(@PathVariable Long id) {

@@ -18,8 +18,8 @@ import java.util.Objects;
 public class OrderEntity extends AuditEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="seq_user_id_gen")
-    @SequenceGenerator(name="seq_user_id_gen", sequenceName="SEQ_USER_ID", initialValue = 1000, allocationSize = 5) // name of the sequence, initial value for the seq, number of id hibernate will fetch at the same time to avoid going to the db
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="seq_order_id_gen")
+    @SequenceGenerator(name="seq_order_id_gen", sequenceName="SEQ_ORDER_ID", initialValue = 1000, allocationSize = 5) // name of the sequence, initial value for the seq, number of id hibernate will fetch at the same time to avoid going to the db
     private Long id;
 
     @Column(unique = false, nullable = false, length=40)

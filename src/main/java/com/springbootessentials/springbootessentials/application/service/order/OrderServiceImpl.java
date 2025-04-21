@@ -18,8 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
+
 @LogExecutionSPE
+@Service
 public class OrderServiceImpl implements OrderService {
 
 

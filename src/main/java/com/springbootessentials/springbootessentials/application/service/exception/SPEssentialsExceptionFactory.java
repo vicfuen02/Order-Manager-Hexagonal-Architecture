@@ -1,9 +1,6 @@
 package com.springbootessentials.springbootessentials.application.service.exception;
 
-import com.springbootessentials.springbootessentials.domain.exception.AddressExceptionsEnum;
-import com.springbootessentials.springbootessentials.domain.exception.OrderExceptionsEnum;
-import com.springbootessentials.springbootessentials.domain.exception.SPEssentialsBaseExceptionEnum;
-import com.springbootessentials.springbootessentials.domain.exception.SPEssentialsException;
+import com.springbootessentials.springbootessentials.domain.exception.*;
 
 public class SPEssentialsExceptionFactory {
 
@@ -14,6 +11,9 @@ public class SPEssentialsExceptionFactory {
         return new SPEssentialsException(exceptionEnum.getCode(), exceptionEnum.getDesc(), exceptionEnum.getHttpStatus());
     }
     public static SPEssentialsException throwException(AddressExceptionsEnum exceptionEnum) {
+        return new SPEssentialsException(exceptionEnum.getCode(), exceptionEnum.getDesc(), exceptionEnum.getHttpStatus());
+    }
+    public static SPEssentialsException throwException(UserExceptionsEnum exceptionEnum) {
         return new SPEssentialsException(exceptionEnum.getCode(), exceptionEnum.getDesc(), exceptionEnum.getHttpStatus());
     }
 
