@@ -20,12 +20,10 @@ public class OrderServiceCommandImpl implements OrderServiceCommand {
 
 
     private OrderDao orderDao;
-    private OrderServiceMapper orderServiceMapper;
 
     @Autowired
-    public OrderServiceCommandImpl(OrderDao orderDao, OrderServiceMapper orderServiceMapper) {
+    public OrderServiceCommandImpl(OrderDao orderDao) {
         this.orderDao = orderDao;
-        this.orderServiceMapper = orderServiceMapper;
     }
 
 
@@ -36,17 +34,16 @@ public class OrderServiceCommandImpl implements OrderServiceCommand {
             throw new InvalidOrderIdSPEssentialsException();
         }
 
-        OrderEntity orderEntity = this.orderDao.getOrderById(id)
+        Order orderEntity = this.orderDao.getOrderById(id)
                 .orElseThrow(() -> SPEssentialsExceptionFactory.throwException(OrderExceptionsEnum.ORDER_NOT_FOUND));
 
-        return this.orderServiceMapper.toBDTO(orderEntity);
+        return orderEntity;
     }
 
 
     @Transactional
     public Long updateOrder(Order order) {
-        OrderEntity orderEntity = this.orderServiceMapper.toEntity(order);
-        Long orderId = this.orderDao.updateOrder(orderEntity);
+        Long orderId = this.orderDao.updateOrder(order);
         return orderId;
     }
 

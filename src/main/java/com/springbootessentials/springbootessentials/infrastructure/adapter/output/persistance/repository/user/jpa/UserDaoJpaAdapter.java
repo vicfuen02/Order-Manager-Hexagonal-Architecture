@@ -29,11 +29,7 @@ public class UserDaoJpaAdapter implements UserDao {
     @Override
     public Optional<User> findByUsername(String username) {
         Optional<UserEntity> userEntity = this.userJpaRepository.findByUsername(username);
-        if (userEntity.isEmpty()) {
-            return Optional.empty();
-        }
-        User user = this.userServiceMapper.toBDTO(userEntity.get());
-        return Optional.of(user);
+        return userEntity.map(user -> this.userServiceMapper.toBDTO(user));
     }
 
     @Override
