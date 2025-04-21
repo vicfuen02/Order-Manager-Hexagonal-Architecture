@@ -3,7 +3,9 @@ package com.springbootessentials.springbootessentials.infrastructure.adapter.out
 import com.springbootessentials.springbootessentials.application.ports.output.order.OrderDao;
 import com.springbootessentials.springbootessentials.common.annotations.LogExecutionSPE;
 import com.springbootessentials.springbootessentials.domain.common.Pageable;
+import com.springbootessentials.springbootessentials.domain.order.Order;
 import com.springbootessentials.springbootessentials.infrastructure.adapter.output.persistance.entity.OrderEntity;
+import com.springbootessentials.springbootessentials.infrastructure.adapter.output.persistance.mapper.OrderServiceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,40 +22,51 @@ public class OrderDaoJpaAdapter implements OrderDao {
     @Autowired
     private OrderJpaRepository orderJpaRepository;
 
+    @Autowired
+    private OrderServiceMapper orderServiceMapper;
+
     @Override
-    public Long createOrder(OrderEntity order) {
-        return this.orderJpaRepository.save(order).getId();
+    public Long createOrder(Order order) {
+
+        OrderEntity orderEntity = this.orderServiceMapper.toEntity(order);
+        return this.orderJpaRepository.save(orderEntity).getId();
     }
 
     @Override
-    public Pageable<OrderEntity> getOrders(Integer pageNumber, Integer pageSize) {
+    public Pageable<Order> getOrders(Integer pageNumber, Integer pageSize) {
         org.springframework.data.domain.Pageable pageable = PageRequest.of(pageNumber, pageSize,
                 Sort.by(
                         Sort.Order.desc("itemName"),
                         Sort.Order.desc("status.code")
                 ));
         Page<OrderEntity> orders = this.orderJpaRepository.findAll(pageable);
-        return new Pageable<>(orders);
+        return this.orderServiceMapper.toOrderPageBDTO(new Pageable<>(orders));
     }
 
     @Override
-    public Optional<OrderEntity> getOrderById(Long id) {
-        return this.orderJpaRepository.findById(id);
+    public Optional<Order> getOrderById(Long id) {
+        Optional<OrderEntity> orderEntity = this.orderJpaRepository.findById(id);
+        return orderEntity.map(entity -> this.orderServiceMapper.toBDTO(entity));
+
     }
 
     @Override
-    public Long updateOrder(OrderEntity order) {
-        return this.orderJpaRepository.save(order).getId();
+    public Long updateOrder(Order order) {
+
+        OrderEntity orderEntity = this.orderServiceMapper.toEntity(order);
+        return this.orderJpaRepository.save(orderEntity).getId();
     }
 
     @Override
-    public List<OrderEntity> findSentOrdersByAddressId(Long id) {
-        return this.orderJpaRepository.findSentOrdersByAddressId(id);
+    public List<Order> findSentOrdersByAddressId(Long id) {
+        List<OrderEntity> orders = this.orderJpaRepository.findSentOrdersByAddressId(id);
+        return this.orderServiceMapper.toOrderListBDTO(orders);
     }
 
     @Override
-    public Long deleteOrder(OrderEntity order) {
-        this.orderJpaRepository.delete(order);
+    public Long deleteOrder(Order order) {
+        OrderEntity orderEntity = this.orderServiceMapper.toEntity(order);
+        this.orderJpaRepository.delete(orderEntity);
         return order.getId();
     }
 }

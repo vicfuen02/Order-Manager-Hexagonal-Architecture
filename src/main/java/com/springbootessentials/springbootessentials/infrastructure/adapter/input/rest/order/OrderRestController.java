@@ -15,12 +15,13 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/order")
 @LogExecutionSPE
+@RequestMapping("/order")
 @RestController
 public class OrderRestController extends OrderExceptionHandler {
 
@@ -36,6 +37,7 @@ public class OrderRestController extends OrderExceptionHandler {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN','ROL001')")
     @Cacheable(value={"/order"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", key="#root.target.getCacheKey(#root.caches, #root.target.class.name, #root.method.name, #root.args)")
     @GetMapping
     public PageResDTO<OrderResDTO> getOrders(
@@ -46,6 +48,7 @@ public class OrderRestController extends OrderExceptionHandler {
         return this.orderRestControllerMapper.orderPageToResDTO(orderList);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @CacheEvict(value={"/order/create"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", allEntries=true)
     @PostMapping
     public Long createOrder(@RequestBody OrderReqDTO order) {
@@ -54,6 +57,7 @@ public class OrderRestController extends OrderExceptionHandler {
         return this.orderService.createOrder(orderBDTO);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','ROL001')")
     @Cacheable(value={"/order/{id}"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", key="#root.target.getCacheKey(#root.caches, #root.target.class.name, #root.method.name, #root.args)")
     @GetMapping("/{id}")
     public OrderResDTO getOrderById(@PathVariable Long id) {
@@ -62,6 +66,7 @@ public class OrderRestController extends OrderExceptionHandler {
         return this.orderRestControllerMapper.toResDTO(orderByIdResult);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @CacheEvict(value={"/order/{id}/update"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", allEntries = true)
 //    @CacheEvict(value={"/order/{id}", "/order"}, allEntries = true)
     @PutMapping("/{id}")
@@ -72,6 +77,7 @@ public class OrderRestController extends OrderExceptionHandler {
         return this.orderService.updateOrder(orderBDTO);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @CacheEvict(value={"/order/delete/{id}"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)", allEntries=true)
     @DeleteMapping("/{id}")
     public Long deleteOrder(@PathVariable Long id) {
@@ -79,6 +85,7 @@ public class OrderRestController extends OrderExceptionHandler {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @CacheEvict(value={"/order/sendOrder/{id}"}, condition="#root.target.isCacheEnabled(#root.caches, #root.target.class.name, #root.method.name, #root.args)")
     @PostMapping("/sendOrder/{id}")
     public OrderResDTO sendOrder(@PathVariable Long id, @RequestBody SendOrderReqDTO sendOrder) {
@@ -90,6 +97,7 @@ public class OrderRestController extends OrderExceptionHandler {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/sentOrders")
     public List<OrderResDTO> findSentOrdersByAddressId(@RequestParam(name="addressId") Long addressId) {
         List<Order> orders = this.orderService.findSentOrdersByAddressId(addressId);

@@ -18,34 +18,33 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
+
 @LogExecutionSPE
+@Service
 public class OrderServiceImpl implements OrderService {
 
 
-    private OrderServiceMapper orderServiceMapper;
+
     private OrderServiceCommand orderServiceCommand;
     private OrderAsyncService orderAsyncService;
     private OrderDao orderDao;
 
     @Autowired
-    public OrderServiceImpl(OrderDao orderDao, OrderServiceMapper orderServiceMapper, OrderServiceCommand orderServiceCommand, OrderAsyncService orderAsyncService) {
+    public OrderServiceImpl(OrderDao orderDao, OrderServiceCommand orderServiceCommand, OrderAsyncService orderAsyncService) {
         this.orderDao = orderDao;
-        this.orderServiceMapper = orderServiceMapper;
         this.orderServiceCommand = orderServiceCommand;
         this.orderAsyncService = orderAsyncService;
     }
 
     @Transactional
     public Long createOrder(Order order) {
-        OrderEntity orderEntity = this.orderServiceMapper.toEntity(order);
-        Long orderId = this.orderDao.createOrder(orderEntity);
+        Long orderId = this.orderDao.createOrder(order);
         return orderId;
     }
 
     public Pageable<Order> getOrders(Integer pageNumber, Integer pageSize) {
-        Pageable<OrderEntity> pageOrders = this.orderDao.getOrders(pageNumber, pageSize);
-        return this.orderServiceMapper.toOrderPageBDTO(pageOrders);
+        Pageable<Order> pageOrders = this.orderDao.getOrders(pageNumber, pageSize);
+        return pageOrders;
     }
 
     @Override
@@ -73,15 +72,14 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Long deleteOrder(Long orderId) {
 
-        Order orderEntityDTO = this.orderServiceCommand.getOrderById(orderId);
-        OrderEntity orderEntity = this.orderServiceMapper.toEntity(orderEntityDTO);
-        this.orderDao.deleteOrder(orderEntity);
+        Order orderById = this.orderServiceCommand.getOrderById(orderId);
+        this.orderDao.deleteOrder(orderById);
         return orderId;
     }
 
     public List<Order> findSentOrdersByAddressId(Long addressId) {
-        List<OrderEntity> orders = this.orderDao.findSentOrdersByAddressId(addressId);
-        return this.orderServiceMapper.toOrderListBDTO(orders);
+        List<Order> orders = this.orderDao.findSentOrdersByAddressId(addressId);
+        return orders;
     }
 
 

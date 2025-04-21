@@ -58,6 +58,11 @@
             <AppenderRef ref="RollingFile"/>
         </Logger>
 
+        <Logger name="org.springframework.security" level="debug" additivity="false">>
+            <appender-ref ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
+        </Logger>
+
 
     </Loggers>
 </Configuration>
