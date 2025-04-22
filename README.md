@@ -69,9 +69,9 @@ The AsyncService is configured with a custom thread pool executor and error hand
 
 ## 🧠 DB Initialization
 
-In order to be able to use the application correctly the project automatically insert some predefined data
-in the DB such as Orders codes and a default admin user to log in the application.
-To do so, a Strategy Pattern has been implemented to keep this process clean and extensible.
+In order to keep the application usable, it preloads some predefined data
+in the DB, such as order status codes and a default admin user for logging into the application.
+This logic is implemented using a Strategy Pattern to keep the process clean and open for extension
 
 
 ## 🚀 Getting Started
