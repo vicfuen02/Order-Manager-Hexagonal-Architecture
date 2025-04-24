@@ -1,0 +1,60 @@
+@startuml
+    class OrderServiceImpl {
+	    - OrderServiceCommand orderServiceCommand
+	    - OrderAsyncService orderAsyncService
+	    - OrderDao orderDao
+	    + createOrder()
+	    + getOrders()
+	    + getOrderById()
+	    + updateOrder()
+	    + deleteOrder()
+	    + sendOrder()
+    }
+    class OrderDaoJpaAdapter {
+	    + createOrder()
+	    + getOrders()
+	    + getOrderById()
+	    + updateOrder()
+	    + deleteOrder()
+    }
+    class OrderJpaRepository {
+	    + findAll()
+	    + findById()
+	    + findSentOrdersByAddressId()
+    }
+    class OrderServiceCommandImpl {
+	    + getOrderById()
+	    + updateOrder()
+    }
+    class OrderDaoMockAdapter {
+	    + createOrder(Order)
+	    + getOrders(Integer,Integer)
+	    + getOrderById(Long)
+	    + updateOrder(Order)
+	    + findSentOrdersByAddressId(Long)
+	    + deleteOrder(Order)
+    }
+    class OrderDao {
+	    ~ createOrder(Order)
+	    ~ getOrders(Integer,Integer)
+	    ~ getOrderById(Long)
+	    ~ updateOrder(Order)
+	    ~ findSentOrdersByAddressId(Long)
+	    ~ deleteOrder(Order)
+    }
+    class OrderRepositoryMockImpl {
+	    + createOrder(OrderEntity)
+	    + getOrders(Integer,Integer)
+	    + getOrderById(Long)
+	    + updateOrder(OrderEntity)
+	    + findSentOrdersByAddressId(Long)
+	    + deleteOrder(Long)
+    }
+    OrderServiceImpl --> OrderDao
+    OrderServiceCommandImpl --> OrderDao
+    OrderDao <|-- OrderDaoJpaAdapter
+    OrderDao <|-- OrderDaoMockAdapter
+    OrderDaoJpaAdapter --> OrderJpaRepository
+    OrderDaoMockAdapter --> OrderRepositoryMockImpl
+
+@enduml

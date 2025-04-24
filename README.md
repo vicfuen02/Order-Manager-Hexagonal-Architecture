@@ -1,6 +1,6 @@
 # Simple Order Manager Service
 
-A hands-on way to dive into the Spring Boot Framework by building a basic Order Manager from scratch.
+A hands-on way to dive into the Spring Boot Framework by building a basic Order Manager from scratch following proper git flow.
 
 This service allows to create and retrieve orders while simulating real-world backend scenarios such as async processing, cache management, secured endpoints, form-based login, and clean architectural design.
 It also showcases best practices and pattern designs like Factory, Strategy or Observer.
@@ -51,9 +51,9 @@ non-blocking orchestration.
 It also uses interface segregation in order to avoid circular dependencies. 
 Check out the following diagram to see the flow!
 
-![Order orchestration](./uml/order_uml.png)
+[//]: # (![Order orchestration]&#40;./uml/order_uml.png&#41;)
 
-
+![Order orchestration](./uml/order_async_db_uml.png)
 ## 🔐 Authentication & Security
 This application uses Spring Security with form-based login for authentication. A custom security configuration overrides the default behavior to:
 * Enable form-based login
@@ -71,10 +71,10 @@ The AsyncService is configured with a custom thread pool executor and error hand
 
 In order to keep the application usable, it preloads some predefined data
 in the DB, such as order status codes and a default admin user for logging into the application.
-This logic is implemented using a Strategy Pattern to keep the process clean and open for extension
+This logic is implemented using a Strategy Pattern to keep the process clean and open for extension.
 
 
 ## 🚀 Getting Started
 1. Download the project
 2. In root folder execute mvn spring-boot:run
-3. Get ready to play using the default user admin/admin
+3. Get ready to play using the default user admin/admin with POST /login
