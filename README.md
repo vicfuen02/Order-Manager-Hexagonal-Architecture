@@ -1,4 +1,4 @@
-# Simple Order Manager Service
+# Order Manager Service
 
 A hands-on way to dive into the Spring Boot Framework by building a basic Order Manager from scratch following proper git flow.
 
