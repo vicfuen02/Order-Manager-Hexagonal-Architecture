@@ -68,13 +68,16 @@ The AsyncService is configured with a custom thread pool executor and error hand
 * CustomAsyncExceptionHandler to capture and log uncaught exceptions from async tasks
 
 ## 🧠 DB Initialization
-
 In order to keep the application usable, it preloads some predefined data
 in the DB, such as order status codes and a default admin user for logging into the application.
 This logic is implemented using a Strategy Pattern to keep the process clean and open for extension.
 
+## 🐳 Docker
+A multi-stage Dockerfile is used to take advantage of docker's layer-caching to first download maven dependencies, extract the jar file,
+then run it in a lightweight JRE image with a non-root user for better security. 
+Docker Compose simplifies running the container, managing ports, health checks, and persisting logs via a named volume.
 
 ## 🚀 Getting Started
 1. Download the project
-2. In root folder execute mvn spring-boot:run
+2. In root folder execute docker compose up --build
 3. Get ready to play using the default user admin/admin with POST /login
