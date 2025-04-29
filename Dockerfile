@@ -16,7 +16,7 @@ RUN ./mvnw clean package -DskipTests
 
 RUN mkdir -p /home/layer \
     && cd /home/layer \
-    && cp /home/app/target/springbootessentials-0.0.2.jar ./app-spe.jar \
+    && cp /home/app/target/springbootessentials-0.0.3-SNAPSHOT.jar ./app-spe.jar \
     && java -Djarmode=tools -jar app-spe.jar extract --layers --launcher
 
 FROM eclipse-temurin:23-jre-alpine
