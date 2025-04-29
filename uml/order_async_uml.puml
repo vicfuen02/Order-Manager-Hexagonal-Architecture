@@ -1,0 +1,34 @@
+@startuml
+    class OrderServiceImpl {
+	    - OrderServiceCommand orderServiceCommand
+	    - OrderAsyncService orderAsyncService
+	    - OrderDao orderDao
+	    + createOrder()
+	    + getOrders()
+	    + getOrderById()
+	    + updateOrder()
+	    + deleteOrder()
+	    + sendOrder()
+    }
+    class OrderAsyncServiceImpl {
+	    + sendOrderAsync()
+    }
+    class SendSPEssentialsEventServiceImpl {
+	    + subscribe()
+	    + unsubscribe()
+	    + notify()
+    }
+    class OrderServiceCommandImpl {
+	    + getOrderById()
+	    + updateOrder()
+    }
+    class OrderSentSPEssentialsEventImpl {
+	    + update()
+    }
+
+    OrderServiceImpl --> OrderAsyncServiceImpl
+    OrderServiceImpl --> OrderServiceCommandImpl
+    OrderAsyncServiceImpl --> SendSPEssentialsEventServiceImpl
+    SendSPEssentialsEventServiceImpl --> OrderSentSPEssentialsEventImpl
+    OrderSentSPEssentialsEventImpl --> OrderServiceCommandImpl
+@enduml
