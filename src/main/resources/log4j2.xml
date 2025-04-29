@@ -38,10 +38,31 @@
             <AppenderRef ref="RollingFile"/>
         </Logger>
 
-        <logger name="org.springframework.cache" level="trace">
+        <Logger name="org.springframework.cache" level="trace">
+            <appender-ref ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
+        </Logger>
+
+        <Logger name="org.springframework.cache" level="trace">
+            <appender-ref ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
+        </Logger>
+
+        <logger name="org.hibernate.type.descriptor.sql" level="trace">
             <appender-ref ref="Console"/>
             <AppenderRef ref="RollingFile"/>
         </logger>
+
+        <Logger name="org.hibernate.SQL" level="debug" additivity="false">
+            <appender-ref ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
+        </Logger>
+
+        <Logger name="org.springframework.security" level="debug" additivity="false">>
+            <appender-ref ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
+        </Logger>
+
 
     </Loggers>
 </Configuration>
